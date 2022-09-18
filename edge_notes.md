@@ -4,9 +4,8 @@ The title kind of says it all. this is where I plan to keep any notes on the (ve
 
 More specialised notes on, say, ML or DL at the end will be stored elsewhere.    
 
-## What is the edge?      
-Notes date: 17/09/22      
-Article title: What is Edge Machine Learning      
+## Article title: What is Edge Machine Learning        
+Notes date: 17/09/22            
 Autor: Cabe Atwell     
 Article Date: Nov 24, 2020 at 2.07pm      
 Publication: Fierce Electronics     
