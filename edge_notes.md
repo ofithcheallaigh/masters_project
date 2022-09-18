@@ -13,8 +13,8 @@ Publication: Fierce Electronics
 url: https://www.fierceelectronics.com/electronics/what-edge-machine-learning      
 
 - The rise of IoT brought an explosion in smart devices connected to the Cloud     
-- Cloud networks became conjected and security issues were overlooked (or at best, not given the attention they needed = SÓF)     
--- Edge computing is a potential solution      
+- Cloud networks became conjected and security issues were overlooked (*or at best, not given the attention they needed - SÓF*)     
+    - Edge computing is a potential solution      
 - Edge ML is a technique which allowssmart devices to process data locally - either using local servers ot at the device level      
 - This process is done using machine and deep learning algorithms, reducing relicence on Cloud networks      
 
