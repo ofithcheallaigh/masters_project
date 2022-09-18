@@ -5,3 +5,5 @@ This repo aims to be a place where all things related to my MSc in AI reseach pr
 
 As of today (170922) the exact title of my project is still to be set, but I expect it to be something related to "the edge".     
 
+## Table of Contents
+1. [Notes on Edge Devices and Edge Contents](edge_notes.md)
