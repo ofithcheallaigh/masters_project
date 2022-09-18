@@ -1,0 +1,1 @@
+The arduino board used for this project is the Arduino Nano 33 BLE
