@@ -10,12 +10,16 @@
 void setup() {
   // initialize digital pin LED_BUILTIN as an output, or reference 13, which is the pin the LED is connected to.
   pinMode(13, OUTPUT);
+  Serial.begin(9600);
 }
 
 // the loop function runs over and over again forever
 void loop() {               // Repeat
   digitalWrite(13, HIGH);   // turn the LED on, bu setting voltage HIGH
-  delay(1000);              // wait for a second
+  delay(500);              // wait for a second
   digitalWrite(13, LOW);    // turn the LED off by making the voltage LOW
-  delay(1000);              // wait for a second
+  delay(500);              // wait for a second
+
+  // Serial.println("Hmm");
+  // delay(1000);  
 }
