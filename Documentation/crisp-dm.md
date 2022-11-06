@@ -5,6 +5,7 @@ The following were used as sources:
 https://www.ibm.com/docs/en/spss-modeler/saas?topic=dm-crisp-help-overview      
 https://www.datascience-pm.com/crisp-dm-2/
 
+<<<<<<< HEAD
 ## Introduction
 CRISP-DM stands for **Cross-Industry Standard Process for Data Mining**, and is an inductry proven way to guide data mining projects. It is also generic enough that it can be used for most AI type projects. 
 
@@ -35,3 +36,8 @@ If we take these main phases in turn, we can put general, project specific quest
 - How has the deployment worked? What are the results? Did the system work?
 
 The data collection and data preperation phases will be some of the most critical, because if there are issues with the data this could cause problems in the later phases
+=======
+This link has some good information on the topic.
+
+Blahhhhh
+>>>>>>> db9942bfa7b9579b7b3fdff392e4c69d0324a276
