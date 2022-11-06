@@ -1,7 +1,7 @@
 # CRISP-DM Introduction
 
 ## Links
-The following were used as sources:
+The following were used as sources:      
 https://www.ibm.com/docs/en/spss-modeler/saas?topic=dm-crisp-help-overview      
 https://www.datascience-pm.com/crisp-dm-2/
 
