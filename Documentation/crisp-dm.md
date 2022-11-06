@@ -34,4 +34,4 @@ If we take these main phases in turn, we can put general, project specific quest
 - Which models are to be tested? Which gives the best results? Are the results obtained worth the effort?
 - How has the deployment worked? What are the results? Did the system work?
 
-The data collection and data preperation phases will be some of the most critical, because if there are issues with the data this could cause problems in the later phases. 
+The data collection and data preperation phases will be some of the most critical, because if there are issues with the data this could cause problems in the later phases
