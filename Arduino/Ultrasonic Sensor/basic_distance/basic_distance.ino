@@ -7,8 +7,11 @@
 #define echoPin 8 // Echo pin on sensor wired to Pin D8 on dev kit
 #define trigPin 9 // Echo pin on sensor wired to Pin D9 on dev kit
 
-long myArray[10];
+long myArray[400];
 int j, i, k;
+int arraySize;
+
+
 
 // defines variables
 long duration;  // Variable for the duration of sound wave travel
@@ -23,7 +26,7 @@ void setup() {
 void loop() {
 
   j = j+1;
-  for ( i = 0; i < 10; i = i + 1) {
+  for ( i = 0; i < 400; i = i + 1) {
   
     // Clears the trigPin condition
     digitalWrite(trigPin, LOW);
@@ -39,6 +42,7 @@ void loop() {
     
     // Calculating the distance
     distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
+
     
     // Displays the distance on the Serial Monitor
     // Serial.print("Distance: ");
@@ -46,21 +50,27 @@ void loop() {
     // Serial.println(" cm");
     // myArray = duration;
 
-    // Serial.println(sizeof(myArray));
-    // Serial.println(myArray[1]);
-    
-    
+    /*
     Serial.print("Pulse duration ");
     Serial.print(duration);
     Serial.println("");
+    */
 
      myArray[i] = duration;
-  
-    delay(2000);
+
+     arraySize = sizeof(myArray) / sizeof(myArray[0]); // Size of the array is 10 bytes
+
+    delay(20);
+    
+    // Serial.println("The size of the array is: ");
+    // Serial.println(arraySize);
+    
   }
-  for(int k = 0; k < sizeof(myArray); k++)
+  for(int k = 0; k < arraySize; k++)
   {
-    Serial.println(sizeof(myArray));
-    // Serial.println(myArray[i]);
+    // Serial.println(sizeof(myArray));
+    Serial.println(myArray[k]);
   }
-}
+  Serial.println("Array End");
+  
+} // End of void loop
