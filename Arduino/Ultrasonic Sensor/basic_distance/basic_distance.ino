@@ -1,76 +1,145 @@
 /*
  * Sensor: HC-SR04 Ultrasonic sensor
  * Dev kit: Arduino Uno
+ * 
+ * 
+ * Grid:
+ *          X
+ * |-----------------|
+ * |  1  |  2  |  3  | 
+ * |-----------------|
+ * |  4  |  5  |  6  | 
+ * |-----------------|
+ * |  7  |  8  |  9  | 
+ * |-----------------|
+ * 
+ * X = obstacle
  */
 
 
-#define echoPin 8 // Echo pin on sensor wired to Pin D8 on dev kit
-#define trigPin 9 // Echo pin on sensor wired to Pin D9 on dev kit
+#define echoPinCh1 9 //8 // Echo pin on sensor wired to Pin D8 on dev kit
+#define trigPinCh1 10 // // Echo pin on sensor wired to Pin D9 on dev kit
+#define echoPinCh2 2 // Echo pin on sensor wired to Pin D8 on dev kit
+#define trigPinCh2 3 // Echo pin on sensor wired to Pin D9 on dev kit
+// #define SAMPLE_LIMIT 20001
+#define SAMPLE_LIMIT 100001
 
-long myArray[400];
-int j, i, k;
-int arraySize;
-
+long channel1();
+long channel2();
 
 
 // defines variables
-long duration;  // Variable for the duration of sound wave travel
-int distance;   // Variable for the distance measurement
+long durationCh1, durationCh2;  // Variable for the duration of sound wave travel
+long distanceCh1, distanceCh2;                   // Variable for the distance measurement
+long cm;
+int j, i;
+long k;
 
 void setup() {
-  pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
-  pinMode(echoPin, INPUT);  // Sets the echoPin as an INPUT
-  Serial.begin(9600);       // Serial Communication is starting with 9600 of baudrate speed
-  Serial.println("Ultrasonic Sensor Data Capture Start"); // Text to note start of data collection
+  delay(10000); // Delay to serial monitor to be set up
+  pinMode(trigPinCh1, OUTPUT);  // Sets the trigPin as an OUTPUT
+  pinMode(echoPinCh1, INPUT);   // Sets the echoPin as an INPUT
+  pinMode(trigPinCh2, OUTPUT);  // Sets the trigPin as an OUTPUT
+  pinMode(echoPinCh2, INPUT);   // Sets the echoPin as an INPUT
+  Serial.begin(9600);           // Serial Communication is starting with 9600 of baudrate speed
+  Serial.print("Ultrasonic Sensor Data Capture Start"); // Text to note start of data collection
+  Serial.println(",");
+  Serial.print("Obstacle: storage box, open door mid hallway");
+  Serial.println(",");
+  Serial.print("Grid place: 3 (Steady)");
+  Serial.println(",");
+  delay(20000); // Delay to serial monitor to be set up
 }
-void loop() {
+void loop() 
+{ 
+  // long int t1 = millis();
+  // Serial.print("~~~Start~~~");
+  // Serial.println(",");
+  Serial.print("Ch1: ");
+  Serial.println(",");
+  long int t1 = millis();
+  channel1();
+  long int t2 = millis();
+  Serial.print("~~~Ch1 End~~~");
+  Serial.println(",");
+  Serial.print("Channel 1 time: "); 
+  Serial.print(t2-t1); 
+  Serial.println(" milliseconds");
+  Serial.println(",");
 
-  j = j+1;
-  for ( i = 0; i < 400; i = i + 1) {
-  
-    // Clears the trigPin condition
-    digitalWrite(trigPin, LOW);
-    delayMicroseconds(2);
-    
-    // Sets the trigPin HIGH (ACTIVE) for 10 microseconds, as required by sensor
-    digitalWrite(trigPin, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(trigPin, LOW);
-    
-    // Reads the echoPin, returns the sound wave travel time in microseconds
-    duration = pulseIn(echoPin, HIGH);
-    
-    // Calculating the distance
-    distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
+  delay(1000); // 1 second delay
 
+  // Serial.print("~~~Start~~~");
+  // Serial.println(",");
+  Serial.print("Ch2: ");
+  Serial.println(",");
+  long int t3 = millis();
+  channel2();
+  long int t4 = millis();
+  Serial.print("~~~Ch2 End~~~");
+  Serial.println(",");
+  Serial.print("Channel 2 time: "); 
+  Serial.print(t4-t3); 
+  Serial.println(" milliseconds");
+  Serial.println(",");
+
+  delay(300000); // 1 second delay
+
+//    Serial.print(distanceCh1);
+//    Serial.print(",");
+//    Serial.println(distanceCh2);
     
-    // Displays the distance on the Serial Monitor
-    // Serial.print("Distance: ");
-    // Serial.print(distance);
-    // Serial.println(" cm");
-    // myArray = duration;
-
-    /*
-    Serial.print("Pulse duration ");
-    Serial.print(duration);
-    Serial.println("");
-    */
-
-     myArray[i] = duration;
-
-     arraySize = sizeof(myArray) / sizeof(myArray[0]); // Size of the array is 10 bytes
-
-    delay(20);
-    
-    // Serial.println("The size of the array is: ");
-    // Serial.println(arraySize);
-    
-  }
-  for(int k = 0; k < arraySize; k++)
-  {
-    // Serial.println(sizeof(myArray));
-    Serial.println(myArray[k]);
-  }
-  Serial.println("Array End");
-  
 } // End of void loop
+
+long channel1()
+{
+    for(k=0; k < SAMPLE_LIMIT; k++)
+    {
+      // Clears the trigPin condition
+      digitalWrite(trigPinCh1, LOW);
+      delayMicroseconds(2);
+      
+      // Sets the trigPin HIGH (ACTIVE) for 10 microseconds, as required by sensor
+      digitalWrite(trigPinCh1, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(trigPinCh1, LOW);
+      
+      // Reads the echoPin, returns the sound wave travel time in microseconds
+      // I need to convert the long data type to int - this is for memory usage
+      durationCh1 =  pulseIn(echoPinCh1, HIGH);
+      distanceCh1 = durationCh1 * 0.034 / 2;
+      // Serial.print("Ch1: ");
+      Serial.print(durationCh1);
+      // Serial.print(distanceCh1);
+      Serial.println(",");
+      // return distanceCh1;
+    }
+}
+
+long channel2()
+{
+      for(k=0; k < SAMPLE_LIMIT; k++)
+      {
+        // Clears the trigPin condition
+        digitalWrite(trigPinCh2, LOW);
+        delayMicroseconds(2);
+        
+        // Sets the trigPin HIGH (ACTIVE) for 10 microseconds, as required by sensor
+        digitalWrite(trigPinCh2, HIGH);
+        delayMicroseconds(10);
+        digitalWrite(trigPinCh2, LOW);
+        
+        // Reads the echoPin, returns the sound wave travel time in microseconds
+        // I need to convert the long data type to int - this is for memory usage
+        durationCh2 =  pulseIn(echoPinCh2, HIGH);
+        distanceCh2 = durationCh2 * 0.034 / 2;
+        // Serial.print("Ch2: ");
+        // Serial.println(durationCh2);
+        // Serial.print(distanceCh2);
+        Serial.print(durationCh2);
+        Serial.println(",");
+        // return distanceCh2;
+      }
+
+
+}
