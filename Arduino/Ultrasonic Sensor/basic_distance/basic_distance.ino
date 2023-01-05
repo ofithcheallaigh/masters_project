@@ -46,7 +46,7 @@ void setup() {
   Serial.println(",");
   Serial.print("Obstacle: storage box, open door mid hallway");
   Serial.println(",");
-  Serial.print("Grid place: 3 (Steady)");
+  Serial.print("Grid place: 9 (Steady)");
   Serial.println(",");
   delay(20000); // Delay to serial monitor to be set up
 }
