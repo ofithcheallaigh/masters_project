@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Change working folder
-filepath = 'D:/Courses/UUJ/Research Project/masters_project/Data Collection/RawDataCollection/Closed Door'
+filepath = 'D:/Courses/UUJ/Research Project/masters_project/Data Collection/RawDataCollection/Large Narrow Bin Mid-Hallway/'
 # Change the working dir
 os.chdir(filepath)
 # list the contents
@@ -21,8 +21,6 @@ print(len(files))
 for file in range(len(files)):
     # print(files[file])
     filename = files[file]
-    # filename = filename[:-4]
-    # print(filename)
 
     df = pd.read_csv(files[file])
     col_names = df.columns
@@ -31,18 +29,12 @@ for file in range(len(files)):
     # Now start pulling out the data
     ch1_start_idx = [i for i,x in enumerate(df.str.contains("Ch1:")) if x]
     ch2_start_idx = [i for i,x in enumerate(df.str.contains("Ch2:")) if x]
-    # print("Channel 1 start indexes are:", ch1_start_idx)
-    # print("Channel 2 start indexes are:", ch2_start_idx)
 
     ch1_end_idx = [i for i,x in enumerate(df.str.contains("Ch1 End")) if x]
     ch2_end_idx = [i for i,x in enumerate(df.str.contains("Ch2 End")) if x]
-    # print("Channel 1 end indexes are:", ch1_end_idx)
-    # print("Channel 2 end indexes are:", ch2_end_idx)
 
     ch1_time_idx = [i for i,x in enumerate(df.str.contains("Channel 1 time")) if x]
     ch2_time_idx = [i for i,x in enumerate(df.str.contains("Channel 2 time")) if x]
-    # print("Channel 1 time indexes is:", ch1_time_idx)
-    # print("Channel 2 time indexes is:", ch2_time_idx)
 
     # Now I need to slide up the data to remove the timestamps and turn the strong 
     # formatted number into an int
@@ -51,10 +43,17 @@ for file in range(len(files)):
 
     # Converting to int
     ch1_int_nums = pd.to_numeric(ch1_str_nums, errors='coerce').fillna(0).astype(np.int64)
-
     ch2_str_nums = str_numbers.iloc[ch2_start_idx[0]+1:ch2_end_idx[0]]
+
     # ch2_str_nums
     ch2_int_nums = pd.to_numeric(ch2_str_nums, errors='coerce').fillna(0).astype(np.int64)
+
+    # Now I will get the cm measurements
+    ch1_cm_df = ch1_int_nums * 0.034 / 2
+    ch2_cm_df = ch2_int_nums * 0.034 / 2
+
+
+    # print(ch1_cm_df)
 
     # # Plotting the data
     # plt.plot(ch1_int_nums)
@@ -64,6 +63,24 @@ for file in range(len(files)):
     # plt.ylim(0,5000) # Max limit used for all plots
     # plt.show()
 
-    final_df = pd.DataFrame(data=[ch1_int_nums,ch2_int_nums])
-final_df.head
+    ch1_int_nums_df = pd.DataFrame(ch1_int_nums)
+    ch2_int_nums_df = pd.DataFrame(ch2_int_nums)
+    raw_distance_data = [ch1_int_nums_df.reset_index(),ch2_int_nums_df.reset_index()]
+    result = pd.concat(raw_distance_data, axis=1)
+
+    str_name = result.columns[1]
+    meh = str(str_name)
+    # print(type(meh))
+    cm_data = [ch1_cm_df,ch2_cm_df]
+    # print(cm_data)
+    cm_df = pd.DataFrame(cm_data)
+
+    # print(result.columns[1])
+
+    out_path = "D:/Courses/UUJ/Research Project/masters_project/Data Collection/RawDataCollection/Large Narrow Bin Mid-Hallway/processed_data/"
+    out_final_raw = os.path.join(out_path, 'distance_' + filename)
+    # out_final_cm = os.path.join(out_path, 'cm_'+filename)
+    result.to_csv(out_final_raw, index=False)
+    # cm_df.to_csv(out_final_cm, index=False)
+
 # final_df.to_csv(filename, sep=',', index=False)
