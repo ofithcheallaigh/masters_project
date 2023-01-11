@@ -44,11 +44,11 @@ void setup() {
   Serial.begin(9600);           // Serial Communication is starting with 9600 of baudrate speed
   Serial.print("Ultrasonic Sensor Data Capture Start"); // Text to note start of data collection
   Serial.println(",");
-  Serial.print("Obstacle: storage box, open door mid hallway");
+  Serial.print("Obstacle: Umbreall holder, open door mid hallway");
   Serial.println(",");
   Serial.print("Grid place: 9 (Steady)");
   Serial.println(",");
-  delay(20000); // Delay to serial monitor to be set up
+  delay(30000); // Delay to serial monitor to be set up
 }
 void loop() 
 { 
