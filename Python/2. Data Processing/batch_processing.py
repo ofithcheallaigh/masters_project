@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Change working folder
-filepath = 'D:/Courses/UUJ/Research Project/masters_project/Data Collection/RawDataCollection/Closed Door/'
+filepath = 'D:/Courses/UUJ/Research Project/masters_project/Data Collection/RawDataCollection/Openhall_no_obst/'
 # Change the working dir
 os.chdir(filepath)
 # list the contents
@@ -77,7 +77,7 @@ for file in range(len(files)):
 
     # print(result.columns[1])
 
-    out_path = "D:/Courses/UUJ/Research Project/masters_project/Data Collection/RawDataCollection/Closed Door/processed_data/"
+    out_path = "D:/Courses/UUJ/Research Project/masters_project/Data Collection/RawDataCollection/Openhall_no_obst/processed_data/"
     out_final_raw = os.path.join(out_path, 'distance_' + filename)
     # out_final_cm = os.path.join(out_path, 'cm_'+filename)
     result.to_csv(out_final_raw, index=False)
