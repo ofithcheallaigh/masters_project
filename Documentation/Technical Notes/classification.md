@@ -52,14 +52,21 @@ One potential threshold which could be used would be 0.5, where all inputs great
 
 Which this threshold may be a starting point, thresholds are problem specific, and as such, they need to be tuned. 
 
+The best threshold for the classifier may be derived from a set of circumstances, such as looking at Precision-Recall Curves or ROC Curves
+
+## The Algorithms
+### Logistic Regression
+Logistic regression is a ML algorithm used for classification tasks. As described above, classification tasks are concerned with predicting the probability that an input belongs in a certain class or not. 
+
+Logistics regression gets it's name from the function used in the method - the logistic function
+
 # Sources
 1. [Towards Data Science - Classification Models and Thresholds in Machine Leanring](https://towardsdatascience.com/classification-models-and-thresholds-97821aa5760f#:~:text=Classification%20models%20are%20a%20subset,spam%20or%20not%20%E2%80%94%20binary%20classification.)
-
 2. [Machine Learning Mastery - A Gentle Introduction to Threshold-Moving for Imbalanced Classification](https://machinelearningmastery.com/threshold-moving-for-imbalanced-classification/)
-
 3. [Deep Checks - Classification Thresholds](https://deepchecks.com/glossary/classification-threshold/#:~:text=In%20a%20binary%20classification%20issue,are%20allocated%20to%20class%200.)
-
 4. [Equation Support 1](https://docs.mathjax.org/en/latest/input/tex/macros/index.html)
-
 5. [Equation Support 2](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions)
+6. [KD Nugets - How Does Logistic Regression Work](https://www.kdnuggets.com/2022/07/logistic-regression-work.html)
+7. [Machine Leaning Mastery - Logistic Regression for Machine Learning](https://machinelearningmastery.com/logistic-regression-for-machine-learning/)
+
 
