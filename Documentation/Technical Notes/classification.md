@@ -44,9 +44,6 @@ One potential threshold which could be used would be 0.5, where all inputs great
 
 ```math 
 \textrm{Class} \space 0 = \textrm{Prediction} \ge 0.5
-```
-and
-```math 
 \textrm{Class} \space 1 = \textrm{Prediction} < 0.5 
 ```
 
