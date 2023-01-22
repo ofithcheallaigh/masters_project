@@ -43,8 +43,8 @@ This is where the idea of a classification threshold comes into play.
 One potential threshold which could be used would be 0.5, where all inputs greather than or equal this threshold are mapped to one class, and all other inputs are mapped to the different class. To put it another way:
 
 $$
- \textrm{Class}  0 = Prediction \ge 0.5       
- \textrm{Class}  1 = Prediction < 0.5 
+ \textrm{Class}  0 = \textrm{Prediction} \ge 0.5    \\   
+ \textrm{Class}  1 = \textrm{Prediction} < 0.5 
 $$
 
 Which this threshold may be a starting point, thresholds are problem specific, and as such, they need to be tuned. 
