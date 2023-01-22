@@ -47,11 +47,7 @@ $$
  \textrm{Class}  1 = \textrm{Prediction} < 0.5 
 $$
 
-window.MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']]
-  }
-};
+\\[ 2+2 \\].
 
 Which this threshold may be a starting point, thresholds are problem specific, and as such, they need to be tuned. 
 
