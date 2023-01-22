@@ -44,7 +44,7 @@ One potential threshold which could be used would be 0.5, where all inputs great
 
 $$ 
 \textrm{Class} \: 0 = Prediction \ge 0.5 \\
-\textrm{Class} \: 1 = Prediction < 0.5
+\textrm{Class} <span> 1 </span> = Prediction < 0.5
 $$
 
 Which this threshold may be a starting point, thresholds are problem specific, and as such, they need to be tuned. 
