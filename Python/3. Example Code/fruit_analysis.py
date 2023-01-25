@@ -16,6 +16,9 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+
 fruits = pd.read_table('fruit_data_with_colors.txt')
 
 # print(fruits.head())
@@ -89,3 +92,6 @@ print('Accuracy of SVM classifier on training set: {:.2f}'.format(svm.score(X_tr
 print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test))) # 0.80
 
 # KNN was the most accurate
+pred = knn.predict(X_test)
+print(confusion_matrix(y_test, pred))
+print(classification_report(y_test, pred))
