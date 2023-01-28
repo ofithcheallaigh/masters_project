@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import cm
+import seaborn as sns
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -29,17 +30,24 @@ data.LabelObject.replace(('Yes', 'No'), (1, 0), inplace=True)
 X = data[feature_names]
 y = data['LabelObject']
 
+sns.scatterplot(x='Channel1', y='Channel2', data=data, hue='LabelObject', ec=None)
+plt.show()
+
+# plt.scatter(data['Channel1'],data['Channel2'],)
+# plt.show()
+"""
 cmap = cm.get_cmap('gnuplot')
 scatter = pd.plotting.scatter_matrix(X, c=y, marker='o', s=40, hist_kwds={'bins':15}, figsize=(9,9), cmap=cmap)
 plt.suptitle('Scatter-matrix for each input variable')
 # plt.show()
 # plt.savefig('object_scatter_matrix')
 
+
 # Creating Training and Test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
-# scaler=MinMaxScaler()
-# X_train = scaler.fit_transform(X_train)
-# X_test = scaler.transform(X_test)
+scaler=MinMaxScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
 
 # Model: Logistic regression
 logReg = LogisticRegression()
@@ -75,3 +83,4 @@ svm = SVC()
 svm.fit(X_train, y_train)
 print('Accuracy of SVM classifier on training set: {:.2f}'.format(svm.score(X_train, y_train))) # 0.91
 print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test))) # 0.80
+ """
