@@ -65,7 +65,7 @@ plt.xlabel("Number of Neigbours")
 plt.ylabel("Accuracy Score")
 plt.title("KNN Accuracy Score for k Between 1 and 100")
 plt.show()
-plt.savefig('bbject_scatter_matrix_object_display_stand.jpg')
+plt.savefig('scatter_matrix_object_display_stand.jpg')
 
 
 """ # Model: Logistic regression
