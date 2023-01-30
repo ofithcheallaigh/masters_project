@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import seaborn as sns
+import numpy as np
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -17,8 +18,15 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn import neighbors
 
+dataset1 = pd.read_csv("2. Data Processing\\0. Data\midhallway_displaystand_final_dataset.csv")
+dataset2 = pd.read_csv("2. Data Processing\\0. Data\midhallway_clear_final_dataset.csv")
 
-data = pd.read_csv('2. Data Processing\\0. Data\openhallway_displaystand_final_dataset.csv')
+# data = pd.read_csv('2. Data Processing\\0. Data\openhallway_displaystand_final_dataset.csv')
+data = np.vstack((dataset1,dataset2))
+
+data = pd.DataFrame(data)
+data.columns=["Channel1","Channel2","LabelObject","Grid"]
+print(data.columns)
 
 # print(data.shape)
 feature_names = ['Channel1','Channel2']
@@ -31,14 +39,21 @@ data.LabelObject.replace(('Yes', 'No'), (1, 0), inplace=True)
 X = data[feature_names]
 y = data['LabelObject']
 
-# sns.scatterplot(x='Channel1', y='Channel2', data=data, hue='LabelObject', ec=None)
+# print(X)
+
+# sns.scatterplot(x='Channel2', y='LabelObject', data=data, hue='LabelObject', ec=None)
+# sns.scatterplot(x=X, y=y, data=data, hue='LabelObject', ec=None)
 # plt.show()
 
 # plt.scatter(data['Channel1'],data['Channel2'],)
 # plt.show()
 
+print(X)
+# print(y)
+
 # cmap = cm.get_cmap('gnuplot')
-# scatter = pd.plotting.scatter_matrix(X, c=y, marker='o', s=40, hist_kwds={'bins':15}, figsize=(9,9), cmap=cmap)
+# scatter = pd.plotting.scatter_matrix(X, c=response, marker='o', s=40, hist_kwds={'bins':15}, figsize=(9,9), cmap=cmap)
+# pd.plotting.scatter_matrix(for_scatter)
 # plt.suptitle('Scatter-matrix for each input variable')
 # plt.show()
 # plt.savefig('object_scatter_matrix. Object: Display Stand')
@@ -52,8 +67,7 @@ X_test = scaler.transform(X_test)
 
 # print(y_test)
 
-
-
+"""
 allResults = []
 for kValue in range(1,50):
     knn = neighbors.KNeighborsClassifier(n_neighbors=kValue, metric="minkowski",p=1)
@@ -65,10 +79,11 @@ plt.xlabel("Number of Neigbours")
 plt.ylabel("Accuracy Score")
 plt.title("KNN Accuracy Score for k Between 1 and 100")
 plt.show()
-plt.savefig('scatter_matrix_object_display_stand.jpg')
+plt.savefig('scatter_matrix_object_display_stand.jpg') 
+"""
 
 
-""" # Model: Logistic regression
+# Model: Logistic regression
 logReg = LogisticRegression()
 logReg.fit(X_train, y_train)
 print('Accuracy of Logistic regression classifier on training set: {:.2f}'.format(logReg.score(X_train, y_train))) # 0.75
@@ -97,8 +112,10 @@ gnb.fit(X_train, y_train)
 print('Accuracy of GNB classifier on training set: {:.2f}'.format(gnb.score(X_train, y_train))) # 0.86
 print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test))) # 0.67 
 
+"""
 # Model: SVM
 svm = SVC()
 svm.fit(X_train, y_train)
 print('Accuracy of SVM classifier on training set: {:.2f}'.format(svm.score(X_train, y_train))) # 0.91
-print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test))) # 0.80"""
+print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test))) # 0.80
+"""
