@@ -19,7 +19,7 @@ from sklearn.svm import SVC
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
-fruits = pd.read_table('fruit_data_with_colors.txt')
+fruits = pd.read_table('3. Example Code\Fruits Example\\fruit_data_with_colors.txt')
 
 # print(fruits.head())
 # print(fruits.shape) # 59, 7
@@ -45,9 +45,13 @@ feature_names = ['mass','width','height','color_score']
 X = fruits[feature_names]
 y = fruits['fruit_label']
 
+print(X)
+print(y)
+
 cmap = cm.get_cmap('gnuplot')
 scatter = pd.plotting.scatter_matrix(X, c=y, marker='o', s=40, hist_kwds={'bins':15}, figsize=(9,9), cmap=cmap)
-# plt.suptitle('Scatter-matrix for each input variable')
+plt.suptitle('Scatter-matrix for each input variable')
+plt.show()
 # plt.savefig('fruits_scatter_matrix')
 
 # Creating Training and Test sets
