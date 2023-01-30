@@ -18,8 +18,8 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn import neighbors
 
-dataset1 = pd.read_csv("2. Data Processing\\0. Data\midhallway_displaystand_final_dataset.csv")
-dataset2 = pd.read_csv("2. Data Processing\\0. Data\midhallway_clear_final_dataset.csv")
+dataset1 = pd.read_csv("0. Data\midhallway_displaystand_final_dataset.csv")
+dataset2 = pd.read_csv("0. Data\midhallway_clear_final_dataset.csv")
 
 # data = pd.read_csv('2. Data Processing\\0. Data\openhallway_displaystand_final_dataset.csv')
 data = np.vstack((dataset1,dataset2))
@@ -82,7 +82,7 @@ plt.show()
 plt.savefig('scatter_matrix_object_display_stand.jpg') 
 """
 
-
+"""
 # Model: Logistic regression
 logReg = LogisticRegression()
 logReg.fit(X_train, y_train)
@@ -118,4 +118,3 @@ svm = SVC()
 svm.fit(X_train, y_train)
 print('Accuracy of SVM classifier on training set: {:.2f}'.format(svm.score(X_train, y_train))) # 0.91
 print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test))) # 0.80
-"""
