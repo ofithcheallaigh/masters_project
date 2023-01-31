@@ -28,7 +28,10 @@ data = np.vstack((dataset1,dataset2))
 
 data = pd.DataFrame(data)
 data.columns=["Channel1","Channel2","LabelObject","Grid"]
-print(data.columns)
+
+# This was added in to just pick out grid pos 1
+grid1_data = data.loc[data['Grid']==1]
+data = grid1_data
 
 # print(data.shape)
 feature_names = ['Channel1','Channel2']
@@ -41,7 +44,9 @@ data.LabelObject.replace(('Yes', 'No'), (1, 0), inplace=True)
 X = data[feature_names]
 y = data['LabelObject']
 
-# print(X)
+# pick out rows depending on grid num
+
+
 
 # sns.scatterplot(x='Channel2', y='LabelObject', data=data, hue='LabelObject', ec=None)
 # sns.scatterplot(x=X, y=y, data=data, hue='LabelObject', ec=None)
@@ -50,8 +55,7 @@ y = data['LabelObject']
 # plt.scatter(data['Channel1'],data['Channel2'],)
 # plt.show()
 
-print(X)
-# print(y)
+print(X.shape)
 
 # cmap = cm.get_cmap('gnuplot')
 # scatter = pd.plotting.scatter_matrix(X, c=response, marker='o', s=40, hist_kwds={'bins':15}, figsize=(9,9), cmap=cmap)
@@ -84,8 +88,8 @@ plt.show()
 plt.savefig('scatter_matrix_object_display_stand.jpg') 
 """
 
-"""
-# Model: Logistic regression
+
+""" # Model: Logistic regression
 logReg = LogisticRegression()
 logReg.fit(X_train, y_train)
 print('Accuracy of Logistic regression classifier on training set: {:.2f}'.format(logReg.score(X_train, y_train))) # 0.75
@@ -112,9 +116,8 @@ print('Accuracy of LDA classifier on test set: {:.2f}'.format(lda.score(X_test, 
 gnb = GaussianNB()
 gnb.fit(X_train, y_train)
 print('Accuracy of GNB classifier on training set: {:.2f}'.format(gnb.score(X_train, y_train))) # 0.86
-print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test))) # 0.67 
+print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test))) # 0.67  """
 
-"""
 # Model: SVM
 svm = SVC()
 svm.fit(X_train, y_train)
