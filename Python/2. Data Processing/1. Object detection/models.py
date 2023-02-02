@@ -23,15 +23,23 @@ from sklearn import neighbors
 dataset1 = pd.read_csv("0. Data\midhallway_displaystand_final_dataset.csv")
 dataset2 = pd.read_csv("0. Data\midhallway_clear_final_dataset.csv")
 
+mod_dataset2 = dataset2
+mod_dataset2.drop(['Grid'],axis=1) # Dropping the original grid with various grid numbers
+mod_dataset2['Grid'] = 0 # Replacing with new grid with 0
+print(mod_dataset2)
+dataset2 = mod_dataset2
+
 # data = pd.read_csv('2. Data Processing\\0. Data\openhallway_displaystand_final_dataset.csv')
 data = np.vstack((dataset1,dataset2))
 
+
 data = pd.DataFrame(data)
 data.columns=["Channel1","Channel2","LabelObject","Grid"]
+data.to_csv('out.txt')
 
 # This was added in to just pick out grid pos 1
-grid1_data = data.loc[data['Grid']==1]
-data = grid1_data
+# grid1_data = data.loc[data['Grid']==1]
+# data = grid1_data
 
 # print(data.shape)
 feature_names = ['Channel1','Channel2']
