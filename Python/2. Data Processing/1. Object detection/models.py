@@ -18,52 +18,39 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn import neighbors
 
-# Test to see does branching work.
+# Read in the data
+dataset1 = pd.read_csv("2. Data Processing\\0. Data\midhallway_displaystand_final_dataset.csv")
+dataset2 = pd.read_csv("2. Data Processing\\0. Data\midhallway_clear_final_dataset.csv")
 
-dataset1 = pd.read_csv("0. Data\midhallway_displaystand_final_dataset.csv")
-dataset2 = pd.read_csv("0. Data\midhallway_clear_final_dataset.csv")
-
-mod_dataset2 = dataset2
+# This bit of code is used to change the grid number of the "no object dataset" to 0
+# This is needed for the grid number detection work 
+mod_dataset2 = dataset2 # Get the data we are intersted in
 mod_dataset2.drop(['Grid'],axis=1) # Dropping the original grid with various grid numbers
 mod_dataset2['Grid'] = 0 # Replacing with new grid with 0
-print(mod_dataset2)
-dataset2 = mod_dataset2
+dataset2 = mod_dataset2 # Reassign to dataset2
 
-# data = pd.read_csv('2. Data Processing\\0. Data\openhallway_displaystand_final_dataset.csv')
-data = np.vstack((dataset1,dataset2))
+data = np.vstack((dataset1,dataset2)) # Create a variable with one dataset stacked on the other
 
 
-data = pd.DataFrame(data)
-data.columns=["Channel1","Channel2","LabelObject","Grid"]
-data.to_csv('out.txt')
+data = pd.DataFrame(data) # Convert to DataFrame
+data.columns=["Channel1","Channel2","LabelObject","Grid"] # Assign column names
+# data.to_csv('out.txt') # This was here to output a text file to show Ian
 
+# pick out rows depending on grid num
 # This was added in to just pick out grid pos 1
 # grid1_data = data.loc[data['Grid']==1]
 # data = grid1_data
 
-# print(data.shape)
-feature_names = ['Channel1','Channel2']
-response = data['LabelObject']
+feature_names = ['Channel1','Channel2'] # Features we are interested in
+response = data['LabelObject'] # Response we are interested in
 
-data.LabelObject.replace(('Yes', 'No'), (1, 0), inplace=True)
+# Replaces Yes/No with 1/0. Required because some algo will not accept categorical data
+data.LabelObject.replace(('Yes', 'No'), (1, 0), inplace=True) 
 
-# print(data.tail(10))
-
+# X and y are what will be passed through the algorithms to train the model
 X = data[feature_names]
 y = data['LabelObject']
 
-# pick out rows depending on grid num
-
-
-
-# sns.scatterplot(x='Channel2', y='LabelObject', data=data, hue='LabelObject', ec=None)
-# sns.scatterplot(x=X, y=y, data=data, hue='LabelObject', ec=None)
-# plt.show()
-
-# plt.scatter(data['Channel1'],data['Channel2'],)
-# plt.show()
-
-print(X.shape)
 
 # cmap = cm.get_cmap('gnuplot')
 # scatter = pd.plotting.scatter_matrix(X, c=response, marker='o', s=40, hist_kwds={'bins':15}, figsize=(9,9), cmap=cmap)
@@ -74,14 +61,14 @@ print(X.shape)
 
 
 # Creating Training and Test sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
-scaler=MinMaxScaler()
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0) # train_test_split is the best way to slipt up the data
+scaler=MinMaxScaler() # Using a scaler because there can be a lot of variability in the data values
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-# print(y_test)
 
 """
+# This will print the accuracy score for variou neigbour numbers
 allResults = []
 for kValue in range(1,50):
     knn = neighbors.KNeighborsClassifier(n_neighbors=kValue, metric="minkowski",p=1)
@@ -96,8 +83,8 @@ plt.show()
 plt.savefig('scatter_matrix_object_display_stand.jpg') 
 """
 
-
-""" # Model: Logistic regression
+# The sections below generate the model accuracy scores
+# Model: Logistic regression
 logReg = LogisticRegression()
 logReg.fit(X_train, y_train)
 print('Accuracy of Logistic regression classifier on training set: {:.2f}'.format(logReg.score(X_train, y_train))) # 0.75
@@ -124,10 +111,10 @@ print('Accuracy of LDA classifier on test set: {:.2f}'.format(lda.score(X_test, 
 gnb = GaussianNB()
 gnb.fit(X_train, y_train)
 print('Accuracy of GNB classifier on training set: {:.2f}'.format(gnb.score(X_train, y_train))) # 0.86
-print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test))) # 0.67  """
+print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test))) # 0.67  
 
-# Model: SVM
+""" # Model: SVM
 svm = SVC()
 svm.fit(X_train, y_train)
 print('Accuracy of SVM classifier on training set: {:.2f}'.format(svm.score(X_train, y_train))) # 0.91
-print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test))) # 0.80
+print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test))) # 0.80 """
