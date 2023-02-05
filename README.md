@@ -9,7 +9,7 @@
 
 <br>
 
-![GitHub issues](https://img.shields.io/github/issues/sofithcheallaigh/masters_project)
+![GitHub issues](https://img.shields.io/github/issues/ofithcheallaigh/masters_project)
 ## Introduction
 This repo aims to be a place where all things related to my MSc in AI reseach project will be kept. 
 
