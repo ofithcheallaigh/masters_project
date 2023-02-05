@@ -1,4 +1,8 @@
 # masters_project
+<div align="center">
+  <img src="Images/logo.png">
+</div>
+
 
 ## Introduction
 This repo aims to be a place where all things related to my MSc in AI reseach project will be kept. 
