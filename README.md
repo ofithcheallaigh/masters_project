@@ -5,11 +5,18 @@
 
 <br>
 
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg?style=for-the-badge)
+
+[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
+
+<img src="Images\made-with-matlab.svg">
+
+![GitHub repo size](https://img.shields.io/github/repo-size/ofithcheallaigh/masters_project?style=for-the-badge)
+
+![GitHub last commit](https://img.shields.io/github/last-commit/ofithcheallaigh/masters_project?style=for-the-badge)
 
 <br>
 
-![GitHub issues](https://img.shields.io/github/issues/ofithcheallaigh/masters_project)
 ## Introduction
 This repo aims to be a place where all things related to my MSc in AI reseach project will be kept. 
 
