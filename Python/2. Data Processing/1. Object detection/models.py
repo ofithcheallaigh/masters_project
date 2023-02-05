@@ -20,30 +20,14 @@ from sklearn import neighbors
 
 from my_fns import modify_to_grid_zero_fn
 
-""" def modify_to_grid_zero_fn(data):
-    # mod_dataset2 = dataset2
-    data.drop(['Grid'],axis=1) # Dropping the original grid with various grid numbers
-    data['Grid'] = 0 # Replacing with new grid with 0
-    return data """
-
 # Read in the data
-dataset1 = pd.read_csv("2. Data Processing\\0. Data\midhallway_displaystand_final_dataset.csv")
-dataset2 = pd.read_csv("2. Data Processing\\0. Data\midhallway_clear_final_dataset.csv")
-
 dataset1 = pd.read_csv("Python\\2. Data Processing\\0. Data\midhallway_displaystand_final_dataset.csv")
 dataset2 = pd.read_csv("Python\\2. Data Processing\\0. Data\midhallway_clear_final_dataset.csv")
 
 # pf.modify_to_grid_zero_fn(dataset2)
 dataset2 = modify_to_grid_zero_fn(dataset2)
 
-""" mod_dataset2 = dataset2
-mod_dataset2.drop(['Grid'],axis=1) # Dropping the original grid with various grid numbers
-mod_dataset2['Grid'] = 0 # Replacing with new grid with 0
-print(mod_dataset2)
-dataset2 = mod_dataset2 """
-
 data = np.vstack((dataset1,dataset2)) # Create a variable with one dataset stacked on the other
-
 
 data = pd.DataFrame(data) # Convert to DataFrame
 data.columns=["Channel1","Channel2","LabelObject","Grid"] # Assign column names
