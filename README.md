@@ -3,7 +3,13 @@
   <img src="Images/logo.png">
 </div>
 
+<br>
 
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+
+<br>
+
+![GitHub issues](https://img.shields.io/github/issues/sofithcheallaigh/masters_project)
 ## Introduction
 This repo aims to be a place where all things related to my MSc in AI reseach project will be kept. 
 
