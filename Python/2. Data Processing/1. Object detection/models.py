@@ -21,9 +21,12 @@ from sklearn import neighbors
 
 from my_fns import modify_to_grid_zero_fn
 
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 # Read in the data
-dataset1 = pd.read_csv("Python\\2. Data Processing\\0. Data\midhallway_displaystand_final_dataset.csv")
-dataset2 = pd.read_csv("Python\\2. Data Processing\\0. Data\midhallway_clear_final_dataset.csv")
+dataset1 = pd.read_csv("Python\\2. Data Processing\\0. Data\openhallway_dispalystand_final_dataset.csv")
+dataset2 = pd.read_csv("Python\\2. Data Processing\\0. Data\openhallway_final_dataset.csv")
 
 
 len_dataset1 = len(dataset1)
@@ -35,7 +38,7 @@ grid_dataset2_lengths = []
 for x in range(1,10):
     grid_length1 = len(dataset1[dataset1['Grid']==x])
     grid_dataset1_lengths.append(grid_length1)
-    grid_length2 = len(dataset1[dataset2['Grid']==x])
+    grid_length2 = len(dataset2[dataset2['Grid']==x])
     grid_dataset2_lengths.append(grid_length2)
 
 ## Balancing dataset
@@ -95,8 +98,11 @@ scaler=MinMaxScaler() # Using a scaler because there can be a lot of variability
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
+y_train=y_train.astype('int')
+y_test=y_test.astype('int')
 
-"""
+
+
 # This will print the accuracy score for variou neigbour numbers
 allResults = []
 for kValue in range(1,50):
@@ -107,20 +113,17 @@ for kValue in range(1,50):
 plt.plot(allResults)
 plt.xlabel("Number of Neigbours")
 plt.ylabel("Accuracy Score")
-plt.title("KNN Accuracy Score for k Between 1 and 100")
+plt.title("KNN Accuracy Score for k Between 1 and 50")
 plt.show()
 plt.savefig('scatter_matrix_object_display_stand.jpg') 
-"""
+
 
 """ # The sections below generate the model accuracy scores
 # Model: Logistic regression
 logReg = LogisticRegression()
 logReg.fit(X_train, y_train)
 print('Accuracy of Logistic regression classifier on training set: {:.2f}'.format(logReg.score(X_train, y_train))) # 0.75
-print('Accuracy of Logistic regression classifier on test set: {:.2f}'.format(logReg.score(X_test, y_test))) # 0.47 """
-
-
-
+print('Accuracy of Logistic regression classifier on test set: {:.2f}'.format(logReg.score(X_test, y_test))) # 0.47 
 
 
 # Model: Decision tree
@@ -130,11 +133,6 @@ print('Accuracy of Decision Tree classifier on test set: {:.2f}'.format(clf.scor
 
 
 
-
-
-
-
-"""
 # Model: KNN
 knn = KNeighborsClassifier()
 knn.fit(X_train,y_train)
@@ -153,9 +151,9 @@ gnb.fit(X_train, y_train)
 print('Accuracy of GNB classifier on training set: {:.2f}'.format(gnb.score(X_train, y_train))) # 0.86
 print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test))) # 0.67  
 
-# Model: SVM
+""" # Model: SVM
 svm = SVC()
 svm.fit(X_train, y_train)
 print('Accuracy of SVM classifier on training set: {:.2f}'.format(svm.score(X_train, y_train))) # 0.91
-print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test))) # 0.80 
-"""
+print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test))) # 0.80  """
+ """
