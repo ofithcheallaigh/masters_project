@@ -115,7 +115,7 @@ plt.xlabel("Number of Neigbours")
 plt.ylabel("Accuracy Score")
 plt.title("KNN Accuracy Score for k Between 1 and 50")
 plt.show()
-plt.savefig('scatter_matrix_object_display_stand.jpg') 
+plt.savefig('knn_num_of_n_plot.jpg') 
 
 
 """ # The sections below generate the model accuracy scores
@@ -151,9 +151,8 @@ gnb.fit(X_train, y_train)
 print('Accuracy of GNB classifier on training set: {:.2f}'.format(gnb.score(X_train, y_train))) # 0.86
 print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test))) # 0.67  
 
-""" # Model: SVM
+# Model: SVM
 svm = SVC()
 svm.fit(X_train, y_train)
 print('Accuracy of SVM classifier on training set: {:.2f}'.format(svm.score(X_train, y_train))) # 0.91
 print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test))) # 0.80  """
- """
