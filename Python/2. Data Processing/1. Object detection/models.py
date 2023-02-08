@@ -19,13 +19,13 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn import neighbors
 
-from my_fns import modify_to_grid_zero_fn
+from my_fns import modify_to_grid_zero_fn, get_knn_n_plot
 
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # Read in the data
-dataset1 = pd.read_csv("Python\\2. Data Processing\\0. Data\openhallway_dispalystand_final_dataset.csv")
+dataset1 = pd.read_csv("Python\\2. Data Processing\\0. Data\closeddoor_final_dataset.csv")
 dataset2 = pd.read_csv("Python\\2. Data Processing\\0. Data\openhallway_final_dataset.csv")
 
 
@@ -102,57 +102,46 @@ y_train=y_train.astype('int')
 y_test=y_test.astype('int')
 
 
-
-# This will print the accuracy score for variou neigbour numbers
-allResults = []
-for kValue in range(1,50):
-    knn = neighbors.KNeighborsClassifier(n_neighbors=kValue, metric="minkowski",p=1)
-    knn = knn.fit(X_train,y_train)
-    accuracy = knn.score(X_test, y_test)
-    allResults.append(accuracy)
-plt.plot(allResults)
-plt.xlabel("Number of Neigbours")
-plt.ylabel("Accuracy Score")
-plt.title("KNN Accuracy Score for k Between 1 and 50")
-plt.show()
-plt.savefig('knn_num_of_n_plot.jpg') 
+# This is called when wanting to look at the plot to help determine the number of 
+# neigbours that get's the best result
+# allResults = get_knn_n_plot(X_train, X_test, y_train, y_test)
 
 
 """ # The sections below generate the model accuracy scores
 # Model: Logistic regression
 logReg = LogisticRegression()
 logReg.fit(X_train, y_train)
-print('Accuracy of Logistic regression classifier on training set: {:.2f}'.format(logReg.score(X_train, y_train))) # 0.75
-print('Accuracy of Logistic regression classifier on test set: {:.2f}'.format(logReg.score(X_test, y_test))) # 0.47 
+print('Accuracy of Logistic regression classifier on training set: {:.2f}'.format(logReg.score(X_train, y_train))) 
+print('Accuracy of Logistic regression classifier on test set: {:.2f}'.format(logReg.score(X_test, y_test))) 
 
 
 # Model: Decision tree
 clf = DecisionTreeClassifier().fit(X_train, y_train)
-print('Accuracy of Decision Tree classifier on training set: {:.2f}'.format(clf.score(X_train, y_train))) # 1.00
-print('Accuracy of Decision Tree classifier on test set: {:.2f}'.format(clf.score(X_test, y_test))) # 0.87
+print('Accuracy of Decision Tree classifier on training set: {:.2f}'.format(clf.score(X_train, y_train))) 
+print('Accuracy of Decision Tree classifier on test set: {:.2f}'.format(clf.score(X_test, y_test))) 
 
 
 
 # Model: KNN
 knn = KNeighborsClassifier()
 knn.fit(X_train,y_train)
-print('Accuracy of K-NN classifier on training set: {:.2f}'.format(knn.score(X_train, y_train))) # 0.95
-print('Accuracy of K-NN classifier on test set: {:.2f}'.format(knn.score(X_test, y_test))) # 1.00
+print('Accuracy of K-NN classifier on training set: {:.2f}'.format(knn.score(X_train, y_train))) 
+print('Accuracy of K-NN classifier on test set: {:.2f}'.format(knn.score(X_test, y_test))) 
 
 # Model: Linear Discriminant Analysis
 lda = LinearDiscriminantAnalysis()
 lda.fit(X_train, y_train)
-print('Accuracy of LDA classifier on training set: {:.2f}'.format(lda.score(X_train, y_train))) #0.86
-print('Accuracy of LDA classifier on test set: {:.2f}'.format(lda.score(X_test, y_test))) # 0.67
+print('Accuracy of LDA classifier on training set: {:.2f}'.format(lda.score(X_train, y_train))) 
+print('Accuracy of LDA classifier on test set: {:.2f}'.format(lda.score(X_test, y_test))) 
 
 # Model: Gaussian Naive Bayes
 gnb = GaussianNB()
 gnb.fit(X_train, y_train)
-print('Accuracy of GNB classifier on training set: {:.2f}'.format(gnb.score(X_train, y_train))) # 0.86
-print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test))) # 0.67  
+print('Accuracy of GNB classifier on training set: {:.2f}'.format(gnb.score(X_train, y_train)))
+print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test)))  """
 
 # Model: SVM
 svm = SVC()
 svm.fit(X_train, y_train)
-print('Accuracy of SVM classifier on training set: {:.2f}'.format(svm.score(X_train, y_train))) # 0.91
-print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test))) # 0.80  """
+print('Accuracy of SVM classifier on training set: {:.2f}'.format(svm.score(X_train, y_train)))
+print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test)))
