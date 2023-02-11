@@ -1,5 +1,5 @@
 closed = closeddoorfinaldataset;
-open = openhallwayfinaldataset;
+open = midhallwayclearfinaldataset;
 
 T = vertcat(closed,open); % Brings arrays together
 
