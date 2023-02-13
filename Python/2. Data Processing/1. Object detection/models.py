@@ -26,10 +26,12 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # Read in the data
 dataset1 = pd.read_csv("Python\\2. Data Processing\\0. Data\closeddoor_final_dataset.csv")
-dataset2 = pd.read_csv("Python\\2. Data Processing\\0. Data\openhallway_final_dataset.csv")
+dataset1 = modify_to_grid_zero_fn(dataset1) 
 
+dataset2 = pd.read_csv("Python\\2. Data Processing\\0. Data\closeddoor_final_dataset.csv")
+# dataset1=dataset2 # Used to really test the model
 
-len_dataset1 = len(dataset1)
+""" len_dataset1 = len(dataset1)
 len_dataset2 = len(dataset2)
 
 grid_dataset1_lengths = []
@@ -57,14 +59,14 @@ for x in range(1,10):
 
 
 # new_dataset.to_csv("foofoo.csv")
-# pf.modify_to_grid_zero_fn(dataset2)
-dataset2 = modify_to_grid_zero_fn(new_dataset)
+# pf.modify_to_grid_zero_fn(dataset2) """
+# dataset2 = modify_to_grid_zero_fn(dataset2) 
 
 data = np.vstack((dataset1,dataset2)) # Create a variable with one dataset stacked on the other
 
 data = pd.DataFrame(data) # Convert to DataFrame
 data.columns=["Channel1","Channel2","LabelObject","Grid"] # Assign column names
-data.to_csv('out.csv') # This was here to output a text file to show Ian
+# data.to_csv('out.csv') # This was here to output a text file to show Ian
 
 # pick out rows depending on grid num
 # This was added in to just pick out grid pos 1
@@ -72,16 +74,18 @@ data.to_csv('out.csv') # This was here to output a text file to show Ian
 # data = grid1_data
 
 feature_names = ['Channel1','Channel2'] # Features we are interested in
-response = data['Grid'] # Response we are interested in
-# response = data['LabelObject'] # Response we are interested in
+# response = data['Grid'] # Response we are interested in
+response = data['LabelObject'] # Response we are interested in
 
 # Replaces Yes/No with 1/0. Required because some algo will not accept categorical data
 data.LabelObject.replace(('Yes', 'No'), (1, 0), inplace=True) 
 
+# dataset2 = modify_to_grid_zero_fn(dataset2) 
+
 # X and y are what will be passed through the algorithms to train the model
 X = data[feature_names]
-# y = data['LabelObject']
-y = data['Grid']
+y = data['LabelObject']
+# y = data['Grid']
 
 
 # cmap = cm.get_cmap('gnuplot')
@@ -98,8 +102,8 @@ scaler=MinMaxScaler() # Using a scaler because there can be a lot of variability
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-y_train=y_train.astype('int')
-y_test=y_test.astype('int')
+# y_train=y_train.astype('int')
+# y_test=y_test.astype('int')
 
 
 # This is called when wanting to look at the plot to help determine the number of 
@@ -107,34 +111,38 @@ y_test=y_test.astype('int')
 # allResults = get_knn_n_plot(X_train, X_test, y_train, y_test)
 
 
-""" # The sections below generate the model accuracy scores
+# The sections below generate the model accuracy scores
 # Model: Logistic regression
 logReg = LogisticRegression()
 logReg.fit(X_train, y_train)
 print('Accuracy of Logistic regression classifier on training set: {:.2f}'.format(logReg.score(X_train, y_train))) 
 print('Accuracy of Logistic regression classifier on test set: {:.2f}'.format(logReg.score(X_test, y_test))) 
+
 # Model: Decision tree
 clf = DecisionTreeClassifier().fit(X_train, y_train)
 print('Accuracy of Decision Tree classifier on training set: {:.2f}'.format(clf.score(X_train, y_train))) 
 print('Accuracy of Decision Tree classifier on test set: {:.2f}'.format(clf.score(X_test, y_test))) 
+
 # Model: KNN
 knn = KNeighborsClassifier()
 knn.fit(X_train,y_train)
 print('Accuracy of K-NN classifier on training set: {:.2f}'.format(knn.score(X_train, y_train))) 
 print('Accuracy of K-NN classifier on test set: {:.2f}'.format(knn.score(X_test, y_test))) 
+
 # Model: Linear Discriminant Analysis
 lda = LinearDiscriminantAnalysis()
 lda.fit(X_train, y_train)
 print('Accuracy of LDA classifier on training set: {:.2f}'.format(lda.score(X_train, y_train))) 
 print('Accuracy of LDA classifier on test set: {:.2f}'.format(lda.score(X_test, y_test))) 
+
 # Model: Gaussian Naive Bayes
 gnb = GaussianNB()
 gnb.fit(X_train, y_train)
 print('Accuracy of GNB classifier on training set: {:.2f}'.format(gnb.score(X_train, y_train)))
-print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test)))  """
+print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test))) 
 
-# Model: SVM
+""" # Model: SVM
 svm = SVC()
 svm.fit(X_train, y_train)
 print('Accuracy of SVM classifier on training set: {:.2f}'.format(svm.score(X_train, y_train)))
-print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test)))
+print('Accuracy of SVM classifier on test set: {:.2f}'.format(svm.score(X_test, y_test))) """
