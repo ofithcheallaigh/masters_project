@@ -113,27 +113,20 @@ logReg = LogisticRegression()
 logReg.fit(X_train, y_train)
 print('Accuracy of Logistic regression classifier on training set: {:.2f}'.format(logReg.score(X_train, y_train))) 
 print('Accuracy of Logistic regression classifier on test set: {:.2f}'.format(logReg.score(X_test, y_test))) 
-
-
 # Model: Decision tree
 clf = DecisionTreeClassifier().fit(X_train, y_train)
 print('Accuracy of Decision Tree classifier on training set: {:.2f}'.format(clf.score(X_train, y_train))) 
 print('Accuracy of Decision Tree classifier on test set: {:.2f}'.format(clf.score(X_test, y_test))) 
-
-
-
 # Model: KNN
 knn = KNeighborsClassifier()
 knn.fit(X_train,y_train)
 print('Accuracy of K-NN classifier on training set: {:.2f}'.format(knn.score(X_train, y_train))) 
 print('Accuracy of K-NN classifier on test set: {:.2f}'.format(knn.score(X_test, y_test))) 
-
 # Model: Linear Discriminant Analysis
 lda = LinearDiscriminantAnalysis()
 lda.fit(X_train, y_train)
 print('Accuracy of LDA classifier on training set: {:.2f}'.format(lda.score(X_train, y_train))) 
 print('Accuracy of LDA classifier on test set: {:.2f}'.format(lda.score(X_test, y_test))) 
-
 # Model: Gaussian Naive Bayes
 gnb = GaussianNB()
 gnb.fit(X_train, y_train)
