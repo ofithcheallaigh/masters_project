@@ -3,7 +3,15 @@
 % 
 % inputTable = vertcat(closed,open); % Brings arrays together
 
-inputTable = balancedgriddataset;
+data_folder = "D:\Courses\UUJ\Research Project\masters_project\MATLAB\Data";
+run_folder = pwd;
+
+cd(data_folder);
+[file,path] = uigetfile('*.csv','Select One or More Files','MultiSelect','on');
+
+input_table = readtable(strcat(path,file));
+
+inputTable = input_table;
 
 % Change the Pclass from number to char (categorical variable) for
 % convience 
@@ -23,6 +31,7 @@ response = inputTable.Grid;
 % This code specifies all the classifier options and trains the classifier
 % option and trains the classifier
 % trainedDecisionTreeModel = fitctree(predictors,response,'OptimizeHyperparameters','auto');
+% trainedDecisionTreeModel = fitctree(predictors,response);
 
 % ~~Graphic respresentation of the tree~~
 % view(trainedDecisionTreeModel,'mode','graph')
@@ -32,6 +41,6 @@ for n = 1:50
     Mdl_n = fitctree(predictors,response,'MaxNumSplits',n,'CrossVal','on');
     % view(Mdl_n.Trained{1}, 'mode', 'graph')
     validationAccuracy1 = 1 - loss(Mdl_n.Trained{1},predictors,response);
-    results(n) = results(m) + validationAccuracy1;
+    results(n) = results(n) + validationAccuracy1;
 end
 % results = results * 100;
