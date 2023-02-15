@@ -31,10 +31,10 @@ response = inputTable.Grid;
 % This code specifies all the classifier options and trains the classifier
 % option and trains the classifier
 % trainedDecisionTreeModel = fitctree(predictors,response,'OptimizeHyperparameters','auto');
-% trainedDecisionTreeModel = fitctree(predictors,response);
+trainedDecisionTreeModel = fitctree(predictors,response);
 
 % ~~Graphic respresentation of the tree~~
-% view(trainedDecisionTreeModel,'mode','graph')
+view(trainedDecisionTreeModel,'mode','graph')
 
 results = zeros(1,50);
 for n = 1:50
