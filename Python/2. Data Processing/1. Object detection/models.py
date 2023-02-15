@@ -25,13 +25,13 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # Read in the data
-dataset1 = pd.read_csv("Python\\2. Data Processing\\0. Data\closeddoor_final_dataset.csv")
-dataset1 = modify_to_grid_zero_fn(dataset1) 
+dataset1 = pd.read_csv("Python\\2. Data Processing\\0. Data\midhallway_storagebox_final_dataset.csv")
+# dataset1 = modify_to_grid_zero_fn(dataset1) 
 
-dataset2 = pd.read_csv("Python\\2. Data Processing\\0. Data\closeddoor_final_dataset.csv")
+dataset2 = pd.read_csv("Python\\2. Data Processing\\0. Data\openhallway_final_dataset.csv")
 # dataset1=dataset2 # Used to really test the model
 
-""" len_dataset1 = len(dataset1)
+len_dataset1 = len(dataset1)
 len_dataset2 = len(dataset2)
 
 grid_dataset1_lengths = []
@@ -59,14 +59,14 @@ for x in range(1,10):
 
 
 # new_dataset.to_csv("foofoo.csv")
-# pf.modify_to_grid_zero_fn(dataset2) """
-# dataset2 = modify_to_grid_zero_fn(dataset2) 
+# pf.modify_to_grid_zero_fn(dataset2) 
+dataset2 = modify_to_grid_zero_fn(new_dataset) 
 
 data = np.vstack((dataset1,dataset2)) # Create a variable with one dataset stacked on the other
 
 data = pd.DataFrame(data) # Convert to DataFrame
 data.columns=["Channel1","Channel2","LabelObject","Grid"] # Assign column names
-# data.to_csv('out.csv') # This was here to output a text file to show Ian
+data.to_csv('grid0_storagebox_clearhallway.csv') # This was here to output a text file to show Ian
 
 # pick out rows depending on grid num
 # This was added in to just pick out grid pos 1
