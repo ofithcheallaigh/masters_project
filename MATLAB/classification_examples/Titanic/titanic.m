@@ -1,9 +1,9 @@
 %% Example of classification using the Titanic dataset
-Data is imported as a table. Tables store data in column-orientd or
-tabular data. Table variables can have different data types and sizes as
-long as all varibles have the same number of rows. Table variables have 
-names, just as the fields of a structure have names. Use the summary function 
-to get information about a table
+% Data is imported as a table. Tables store data in column-orientd or
+% tabular data. Table variables can have different data types and sizes as
+% long as all varibles have the same number of rows. Table variables have 
+% names, just as the fields of a structure have names. Use the summary function 
+% to get information about a table
 
 %% Standard Opening
 clear;

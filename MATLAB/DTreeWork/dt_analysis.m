@@ -10,18 +10,24 @@ data_folder = "D:\Courses\UUJ\Research Project\masters_project\MATLAB\Data";
 run_folder = pwd;
 
 cd(data_folder);
-[file,path] = uigetfile('*.csv','Select One or More Files','MultiSelect','on');
+% [file,path] = uigetfile('*.csv','Select One or More Files','MultiSelect','on');
+% input_table = readtable(strcat(path,file));
 
-input_table = readtable(strcat(path,file));
+closedDoor = readtable("grid0_closeddoor_clearhallway.csv");
+displayStand = readtable("grid0_displaystand_clearhallway.csv");
+largeBin = readtable("grid0_largebin_clearhallway.csv");
+storageBox = readtable("grid0_storagebox_clearhallway.csv");
 
-inputTable = input_table;
+inputTable = vertcat(closedDoor, displayStand,largeBin,storageBox);
 
-% Scatter plotting
-for i = 1:9
-    plotTable = inputTable(inputTable.Grid == i, :);
-    scatter(plotTable.Channel1, plotTable.Channel2,'color',colourArray{i},'marker','o')
-    hold on
-end
+% inputTable = input_table;
+
+% % Scatter plotting
+% for i = 1:9
+%     plotTable = inputTable(inputTable.Grid == i, :);
+%     scatter(plotTable.Channel1, plotTable.Channel2,'color',colourArray{i},'marker','o')
+%     hold on
+% end
 
 % Change the Pclass from number to char (categorical variable) for
 % convience 
