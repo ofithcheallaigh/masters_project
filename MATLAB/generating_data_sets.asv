@@ -1,0 +1,7 @@
+% 19/2/23
+% This script is here to generate new data sets from the original data sets
+
+data_folder = "D:\Courses\UUJ\Research Project\masters_project\MATLAB\Data";
+
+closedDoor = readtable()
+
