@@ -8,3 +8,14 @@ displayStand = readtable("grid0_displaystand_clearhallway.csv");
 largeBin = readtable("grid0_largebin_clearhallway.csv");
 storageBox = readtable("grid0_storagebox_clearhallway.csv");
 
+valuesOneIn = vertcat(closedDoor,displayStand,largeBin);
+valuesTwoIn = vertcat(closedDoor,displayStand,storageBox);
+valuesThreeIn = vertcat(closedDoor,largeBin,storageBox);
+valuesFourIn = vertcat(displayStand,largeBin,storageBox);
+
+ValuesOneOut = storageBox;
+ValuesTwoOut = largeBin;
+ValuesThreeOut = displayStand;
+ValuesFourOut = closedDoor;
+
+% d = dictionary;
