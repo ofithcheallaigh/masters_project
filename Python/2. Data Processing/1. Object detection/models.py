@@ -24,7 +24,7 @@ from my_fns import modify_to_grid_zero_fn, get_knn_n_plot
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-# Read in the data
+""" # Read in the data
 dataset1 = pd.read_csv("Python\\2. Data Processing\\0. Data\midhallway_storagebox_final_dataset.csv")
 # dataset1 = modify_to_grid_zero_fn(dataset1) 
 
@@ -62,11 +62,13 @@ for x in range(1,10):
 # pf.modify_to_grid_zero_fn(dataset2) 
 dataset2 = modify_to_grid_zero_fn(new_dataset) 
 
-data = np.vstack((dataset1,dataset2)) # Create a variable with one dataset stacked on the other
+data = np.vstack((dataset1,dataset2)) # Create a variable with one dataset stacked on the other """
 
+data = pd.read_csv("MATLAB\Data\myData.csv")
+data.drop("Var1")
 data = pd.DataFrame(data) # Convert to DataFrame
 data.columns=["Channel1","Channel2","LabelObject","Grid"] # Assign column names
-data.to_csv('grid0_storagebox_clearhallway.csv') # This was here to output a text file to show Ian
+# data.to_csv('grid0_storagebox_clearhallway.csv') # This was here to output a text file to show Ian
 
 # pick out rows depending on grid num
 # This was added in to just pick out grid pos 1
