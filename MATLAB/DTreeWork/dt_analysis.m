@@ -1,3 +1,8 @@
+% Standard Opening
+clear;
+clc;
+close all;
+
 % closed = closeddoorfinaldataset;
 % open = midhallwayclearfinaldataset;
 % 
@@ -20,6 +25,8 @@ storageBox = readtable("grid0_storagebox_clearhallway.csv");
 
 inputTable = vertcat(closedDoor, displayStand,largeBin,storageBox);
 
+% writetable(inputTable,'myData.csv','Delimiter',' ')  
+
 % inputTable = input_table;
 
 % % Scatter plotting
@@ -38,9 +45,9 @@ inputTable = vertcat(closedDoor, displayStand,largeBin,storageBox);
 % model
 predictorNames = {'Channel1','Channel2'};
 toNormalise = inputTable(:,predictorNames);
-N = normalize(toNormalise,'range');
-predictors = N;
-% predictors = inputTable(:,predictorNames);  % Could also be predictorNames = inputTable(:,[3,5,12]);
+% N = normalize(toNormalise,'range');
+% predictors = N;
+predictors = inputTable(:,predictorNames);  % Could also be predictorNames = inputTable(:,[3,5,12]);
 response = inputTable.Grid;
 
 % ~~Train the classifier~~
@@ -48,15 +55,53 @@ response = inputTable.Grid;
 % option and trains the classifier
 % trainedDecisionTreeModel = fitctree(predictors,response,'OptimizeHyperparameters','auto');
 trainedDecisionTreeModel = fitctree(predictors,response);
+validationAccuracy = 1 - loss(trainedDecisionTreeModel,predictors,response);
 
 % ~~Graphic respresentation of the tree~~
-view(trainedDecisionTreeModel,'mode','graph')
+% view(trainedDecisionTreeModel,'mode','graph')
 
-results = zeros(1,50);
-for n = 1:50
-    Mdl_n = fitctree(predictors,response,'MaxNumSplits',n,'CrossVal','on');
-    % view(Mdl_n.Trained{1}, 'mode', 'graph')
-    validationAccuracy1 = 1 - loss(Mdl_n.Trained{1},predictors,response);
-    results(n) = results(n) + validationAccuracy1;
-end
-% results = results * 100;
+predicatedY = resubPredict(trainedDecisionTreeModel); 
+
+% ~~Use Train/Test to evaluate the model preformance~~
+% Split the data randomly into train and test groups, on a 70%/30% split
+% First, get the size of the data
+[m,n] = size(inputTable);
+
+% Generate a vector containing random permutation of the integers from 1 to
+% n without repeating
+idx = randperm(m);
+
+% Set the split perfectage
+splitPercentage = 0.70;
+% m1 is the number of the training data
+m1 = round(splitPercentage*m);
+% Now split the data
+trainingData = inputTable(idx(1:m1),:);
+testData = inputTable(idx(m1+1:end),:);
+
+% Build a new tree on the training datasets only
+predictors = trainingData(:, predictorNames);
+response = trainingData.Grid;
+trainedDecisionModdel1 = fitctree(predictors,response);
+
+% Compute the accuracy on the training data
+validationAccuracy1 = 1 - loss(trainedDecisionModdel1,predictors,response);
+
+% Preformance evaluation on the test data
+% Predict the labels of the test data
+predictedY = predict(trainedDecisionModdel1,testData(:,predictorNames));
+
+% Create a confusion matrix chart from the true labels and the predicted
+% labelspredictedY
+cm = confusionchart(testData.Grid,predictedY);
+
+
+
+% results = zeros(1,50);
+% for n = 1:50
+%     Mdl_n = fitctree(predictors,response,'MaxNumSplits',n,'CrossVal','on');
+%     % view(Mdl_n.Trained{1}, 'mode', 'graph')
+%     validationAccuracy1 = 1 - loss(Mdl_n.Trained{1},predictors,response);
+%     results(n) = results(n) + validationAccuracy1;
+% end
+% % results = results * 100;
