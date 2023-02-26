@@ -81,7 +81,7 @@ new_data.columns=["Channel1","Channel2","LabelObject","Grid"] # Assign column na
 # data = grid1_data
 
 # feature_names = ['Channel1','Channel2'] # Features we are interested in
-feature_names = ['Channel2'] # Features we are interested in
+feature_names = ['Channel1'] # Features we are interested in
 # response = data['Grid'] # Response we are interested in
 # response = data['LabelObject'] # Response we are interested in
 
