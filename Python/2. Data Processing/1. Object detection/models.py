@@ -80,7 +80,8 @@ new_data.columns=["Channel1","Channel2","LabelObject","Grid"] # Assign column na
 # grid1_data = data.loc[data['Grid']==1]
 # data = grid1_data
 
-feature_names = ['Channel1','Channel2'] # Features we are interested in
+# feature_names = ['Channel1','Channel2'] # Features we are interested in
+feature_names = ['Channel2'] # Features we are interested in
 # response = data['Grid'] # Response we are interested in
 # response = data['LabelObject'] # Response we are interested in
 
@@ -92,12 +93,12 @@ new_data.LabelObject.replace(('Yes', 'No'), (1, 0), inplace=True)
 
 # X and y are what will be passed through the algorithms to train the model
 X = data[feature_names]
-y = data['LabelObject']
-# y = data['Grid']
+# y = data['LabelObject']
+y = data['Grid']
 
 X_new_data = new_data[feature_names]
-y_new_data = new_data['LabelObject']
-# y_new_data = new_data['Grid']
+# y_new_data = new_data['LabelObject']
+y_new_data = new_data['Grid']
 
 
 # cmap = cm.get_cmap('gnuplot')
@@ -120,12 +121,12 @@ scaler=MinMaxScaler() # Using a scaler because there can be a lot of variability
 X_train_new_data = scaler.fit_transform(X_train_new_data)
 X_test_new_data = scaler.transform(X_test_new_data)
 
-""" y_train=y_train.astype('int')
+y_train=y_train.astype('int')
 y_test=y_test.astype('int')
 
 y_train_new_data=y_train_new_data.astype('int')
 y_test_new_data=y_test_new_data.astype('int')
- """
+
 
 # This is called when wanting to look at the plot to help determine the number of 
 # neigbours that get's the best result
@@ -138,6 +139,7 @@ logReg = LogisticRegression()
 logReg.fit(X_train, y_train)
 print('Accuracy of Logistic regression classifier on training set: {:.2f}'.format(logReg.score(X_train, y_train))) 
 # print('Accuracy of Logistic regression classifier on test set: {:.2f}'.format(logReg.score(X_test, y_test))) 
+
 # Below is used for the unseen data
 print('Accuracy of Logistic regression classifier on test set: {:.2f}'.format(logReg.score(X_test_new_data, y_test_new_data))) 
 
