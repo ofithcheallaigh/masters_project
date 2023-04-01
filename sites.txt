@@ -1,0 +1,11 @@
+https://blog.tensorflow.org/2019/11/how-to-get-started-with-machine.html 
+https://github.com/arduino/ArduinoTensorFlowLiteTutorials
+https://forum.arduino.cc/t/getting-this-error-while-trying-to-compile-my-code-compilation-error-tensorflow-lite-micro-kernels-micro-ops-h-no-such-file-or-directory/1087846
+https://www.tensorflow.org/lite/microcontrollers/get_started_low_level
+https://github.com/tensorflow/tflite-micro
+https://github.com/tensorflow/tflite-micro-arduino-examples/tree/main/src/tensorflow/lite
+https://forum.arduino.cc/t/nano-ble-sense-and-ultrasonic-sensor/626958/2
+https://docs.arduino.cc/tutorials/nano-33-ble-sense/get-started-with-machine-learning
+https://www.tensorflow.org/lite/microcontrollers
+https://www.tensorflow.org/lite/microcontrollers/library
+https://www.tensorflow.org/lite/microcontrollers/get_started_low_level
