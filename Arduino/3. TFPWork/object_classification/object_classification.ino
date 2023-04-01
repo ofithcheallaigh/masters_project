@@ -37,9 +37,36 @@ constexpr int tensorArenaSize = 8 * 1024;
 byte tensorArena[tensorArenaSize] __attribute__((aligned(16)));
 
 // Array to map grids
+const char* GRIDS[] = {
+  "zero",
+  "one",
+  "two",
+  "three",
+  "four",
+  "five",
+  "six",
+  "seven",
+  "eight",
+  "nine"          
+};
+
+#define NUM_GRIDS (sizeof(GRIDS) / sizeof(GRIDS[0]))
 
 void setup() {
   // put your setup code here, to run once:
+  Serial.begin(9600);
+  while(!Serial);
+
+  // Get the TFL repsentation of the model byte array
+  tflModel = tflite::GetModel(model);
+    if (tflModel->version() != TFLITE_SCHEMA_VERSION) {
+    Serial.println("Model schema mismatch!");
+    while (1);
+  }
+  
+  // Generate an interpretor to run the model
+  tflInterpreter = new tflite::MicroInterpreter(tflModel, tflOpsResolver, tensorArena, tensorArenaSize);  
+
 
 }
 
