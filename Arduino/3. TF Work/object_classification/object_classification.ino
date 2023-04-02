@@ -11,6 +11,33 @@ This code is used to run the generated model from my object detection project
 
 #include "object_model_50_128_sdg.h"
 
+/**********************************************************************************************/
+// *** Taken from: https://forum.arduino.cc/t/nano-ble-sense-and-ultrasonic-sensor/626958/3 ***/
+/**********************************************************************************************/
+// function prototype to define default timeout value
+static unsigned int PulseInFun(const byte pin, const byte state, const unsigned long timeout = 1000000L);
+
+// using a macro to avoid function call overhead
+#define WAIT_FOR_PIN_STATE(state) \
+  while (digitalRead(pin) != (state)) { \
+    if (micros() - timestamp > timeout) { \
+      return 0; \
+    } \
+  }
+
+static unsigned int PulseInFun(const byte pin, const byte state, const unsigned long timeout) {
+  unsigned long timestamp = micros();
+  WAIT_FOR_PIN_STATE(!state);
+  WAIT_FOR_PIN_STATE(state);
+  timestamp = micros();
+  WAIT_FOR_PIN_STATE(!state);
+  return micros() - timestamp;
+}
+/**********************************************************************************************/
+/**********************************************************************************************/
+/**********************************************************************************************/
+
+
 const int numSamples = 10000;
 int samplesRead = numSamples;
 
