@@ -37,6 +37,23 @@ static unsigned int pulseInFun(const byte pin, const byte state, const unsigned 
 /**********************************************************************************************/
 /**********************************************************************************************/
 
+#define echoPinCh1 9 //8 // Echo pin on sensor wired to Pin D8 on dev kit
+#define trigPinCh1 10 // // Echo pin on sensor wired to Pin D9 on dev kit
+#define echoPinCh2 2 // Echo pin on sensor wired to Pin D8 on dev kit
+#define trigPinCh2 3 // Echo pin on sensor wired to Pin D9 on dev kit
+// #define SAMPLE_LIMIT 20001
+#define SAMPLE_LIMIT 100001
+
+long channel1();
+long channel2();
+
+
+// defines variables
+long durationCh1, durationCh2;  // Variable for the duration of sound wave travel
+long distanceCh1, distanceCh2;                   // Variable for the distance measurement
+long cm;
+int j, i;
+long k;
 
 const int numSamples = 10000;
 int samplesRead = numSamples;
@@ -104,5 +121,23 @@ void setup() {
 
 void loop() {
   // Here I need to get my data samples, invoke the model and generate an output
+  // Clears the trigPin condition
+  digitalWrite(trigPinCh1, LOW);
+  delayMicroseconds(2);
+  
+  // Sets the trigPin HIGH (ACTIVE) for 10 microseconds, as required by sensor
+  digitalWrite(trigPinCh1, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPinCh1, LOW);
+  
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  // I need to convert the long data type to int - this is for memory usage
+  durationCh1 =  pulseIn(echoPinCh1, HIGH);
+  distanceCh1 = durationCh1 * 0.034 / 2;
+  // Serial.print("Ch1: ");
+  Serial.print(durationCh1);
+  // Serial.print(distanceCh1);
+  Serial.println(",");
+  // return distanceCh1;  
 
 }
