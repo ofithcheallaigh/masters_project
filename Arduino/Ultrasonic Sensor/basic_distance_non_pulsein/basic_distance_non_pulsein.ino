@@ -49,6 +49,8 @@ static unsigned int newPulseIn(const byte pin, const byte state, const unsigned 
 long channel1();
 long channel2();
 
+const int numSamples = 119;
+int samplesRead = numSamples;
 
 // defines variables
 long durationCh1, durationCh2;  // Variable for the duration of sound wave travel
@@ -75,28 +77,23 @@ void setup() {
 void loop() 
 { 
   // Clears the trigPin condition
-      digitalWrite(trigPinCh1, LOW);
-      delayMicroseconds(2);
-      
-      // Sets the trigPin HIGH (ACTIVE) for 10 microseconds, as required by sensor
-      digitalWrite(trigPinCh1, HIGH);
-      delayMicroseconds(10);
-      digitalWrite(trigPinCh1, LOW);
-      
-      // Reads the echoPin, returns the sound wave travel time in microseconds
-      // I need to convert the long data type to int - this is for memory usage
-      durationCh1 =  pulseIn(echoPinCh1, HIGH);
-      distanceCh1 = durationCh1 * 0.034 / 2;
-      // Serial.print("Ch1: ");
-      Serial.print(durationCh1);
-      // Serial.print(distanceCh1);
-      Serial.println(",");
-      // return distanceCh1;
+  digitalWrite(trigPinCh1, LOW);
+  delayMicroseconds(2);
+  
+  // Sets the trigPin HIGH (ACTIVE) for 10 microseconds, as required by sensor
+  digitalWrite(trigPinCh1, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPinCh1, LOW);
+  
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  // I need to convert the long data type to int - this is for memory usage
+  durationCh1 =  newPulseIn(echoPinCh1, HIGH);
+  distanceCh1 = durationCh1 * 0.034 / 2;
+  // Serial.print("Ch1: ");
+  Serial.print(durationCh1);
+  // Serial.print(distanceCh1);
+  Serial.println(",");
 
-//    Serial.print(distanceCh1);
-//    Serial.print(",");
-//    Serial.println(distanceCh2);
-    
 } // End of void loop
 
 
