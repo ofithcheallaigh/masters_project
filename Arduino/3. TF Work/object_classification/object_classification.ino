@@ -67,10 +67,15 @@ void setup() {
   // Generate an interpretor to run the model
   tflInterpreter = new tflite::MicroInterpreter(tflModel, tflOpsResolver, tensorArena, tensorArenaSize);  
 
+  // Assign memory for the model's input and output tensors
+  tflInterpreter->AllocateTensors();
 
+  // Pointers for the model input and output tensors
+  tflInputTensor = tflInterpreter->input(0);
+  tflOutputTensor = tflInterpreter->output(0);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  // Here I need to get my data samples, invoke the model and generate an output
 
 }
