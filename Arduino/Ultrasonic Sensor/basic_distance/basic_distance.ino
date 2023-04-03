@@ -35,6 +35,8 @@ long cm;
 int j, i;
 long k;
 
+
+
 void setup() {
   delay(10000); // Delay to serial monitor to be set up
   pinMode(trigPinCh1, OUTPUT);  // Sets the trigPin as an OUTPUT
