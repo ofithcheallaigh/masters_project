@@ -11,6 +11,13 @@ This code is used to run the generated model from my object detection project
 
 #include "object_model_50_128_sdg.h"
 
+// **************************************** Globals ***************************************** /
+
+// Declaring arrays to hold channel sample data
+long channel1_array[10000];
+long channel2_array[10000];
+
+
 /**********************************************************************************************/
 // *** Taken from: https://forum.arduino.cc/t/nano-ble-sense-and-ultrasonic-sensor/626958/3 ***/
 /**********************************************************************************************/
@@ -98,8 +105,13 @@ const char* GRIDS[] = {
 
 void setup() {
   // put your setup code here, to run once:
+  pinMode(trigPinCh1, OUTPUT);  // Sets the trigPin as an OUTPUT
+  pinMode(echoPinCh1, INPUT);   // Sets the echoPin as an INPUT
+  pinMode(trigPinCh2, OUTPUT);  // Sets the trigPin as an OUTPUT
+  pinMode(echoPinCh2, INPUT);   // Sets the echoPin as an INPUT
   Serial.begin(9600);
   while(!Serial);
+  Serial.print("Ultrasonic Sensor Data Capture Start"); // Text to note start of data collection
 
   // Get the TFL repsentation of the model byte array
   tflModel = tflite::GetModel(model);
@@ -120,24 +132,38 @@ void setup() {
 }
 
 void loop() {
-  // Here I need to get my data samples, invoke the model and generate an output
-  // Clears the trigPin condition
-  digitalWrite(trigPinCh1, LOW);
-  delayMicroseconds(2);
+
+  for(int i=1; i<10000; i++)
+  {
+    Serial.print("In loop"); // Text to note start of data collection
+    // Here I need to get my data samples, invoke the model and generate an output
+    // Clears the trigPin condition
+    digitalWrite(trigPinCh2, LOW);
+    delayMicroseconds(2);
+
+    // Sets the trigPin HIGH (ACTIVE) for 10 microseconds, as required by sensor
+    digitalWrite(trigPinCh2, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPinCh2, LOW);
+
+    // Reads the echoPin, returns the sound wave travel time in microseconds
+    // I need to convert the long data type to int - this is for memory usage
+    durationCh2 =  pulseInFun(echoPinCh2, HIGH);
+    distanceCh2 = durationCh2 * 0.034 / 2;
+
+    channel2_array[i] = durationCh2;
+        
+    Serial.print(channel2_array[i]); // Text to note start of data collection
+  }
+
   
-  // Sets the trigPin HIGH (ACTIVE) for 10 microseconds, as required by sensor
-  digitalWrite(trigPinCh1, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPinCh1, LOW);
+
   
-  // Reads the echoPin, returns the sound wave travel time in microseconds
-  // I need to convert the long data type to int - this is for memory usage
-  durationCh1 =  pulseIn(echoPinCh1, HIGH);
-  distanceCh1 = durationCh1 * 0.034 / 2;
+
   // Serial.print("Ch1: ");
-  Serial.print(durationCh1);
+  Serial.print(channel2_array[1]);
   // Serial.print(distanceCh1);
-  Serial.println(",");
+  // Serial.println(",");
   // return distanceCh1;  
 
 }
