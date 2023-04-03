@@ -39,6 +39,25 @@ static unsigned int newPulseIn(const byte pin, const byte state, const unsigned 
   return micros() - timestamp;
 }
 
+/*
+ * Sensor: HC-SR04 Ultrasonic sensor
+ * Dev kit: Arduino Uno
+ * 
+ * 
+ * Grid:
+ *          X
+ * |-----------------|
+ * |  1  |  2  |  3  | 
+ * |-----------------|
+ * |  4  |  5  |  6  | 
+ * |-----------------|
+ * |  7  |  8  |  9  | 
+ * |-----------------|
+ * 
+ * X = obstacle
+ */
+
+
 #define echoPinCh1 9 //8 // Echo pin on sensor wired to Pin D8 on dev kit
 #define trigPinCh1 10 // // Echo pin on sensor wired to Pin D9 on dev kit
 #define echoPinCh2 2 // Echo pin on sensor wired to Pin D8 on dev kit
@@ -49,8 +68,6 @@ static unsigned int newPulseIn(const byte pin, const byte state, const unsigned 
 long channel1();
 long channel2();
 
-const int numSamples = 119;
-int samplesRead = numSamples;
 
 // defines variables
 long durationCh1, durationCh2;  // Variable for the duration of sound wave travel
@@ -58,6 +75,8 @@ long distanceCh1, distanceCh2;                   // Variable for the distance me
 long cm;
 int j, i;
 long k;
+
+
 
 void setup() {
   delay(10000); // Delay to serial monitor to be set up
@@ -72,34 +91,49 @@ void setup() {
   Serial.println(",");
   Serial.print("Grid place: 9 (Steady)");
   Serial.println(",");
-  delay(3000); // Delay to serial monitor to be set up
+  delay(30000); // Delay to serial monitor to be set up
 }
 void loop() 
 { 
-  // Clears the trigPin condition
-  digitalWrite(trigPinCh1, LOW);
-  delayMicroseconds(2);
-  
-  // Sets the trigPin HIGH (ACTIVE) for 10 microseconds, as required by sensor
-  digitalWrite(trigPinCh1, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPinCh1, LOW);
-  
-  // Reads the echoPin, returns the sound wave travel time in microseconds
-  // I need to convert the long data type to int - this is for memory usage
-  durationCh1 =  newPulseIn(echoPinCh1, HIGH);
-  distanceCh1 = durationCh1 * 0.034 / 2;
-  // Serial.print("Ch1: ");
-  Serial.print(durationCh1);
-  // Serial.print(distanceCh1);
+  // long int t1 = millis();
+  // Serial.print("~~~Start~~~");
+  // Serial.println(",");
+  Serial.print("Ch1: ");
+  Serial.println(",");
+  long int t1 = millis();
+  channel1();
+  long int t2 = millis();
+  Serial.print("~~~Ch1 End~~~");
+  Serial.println(",");
+  Serial.print("Channel 1 time: "); 
+  Serial.print(t2-t1); 
+  Serial.println(" milliseconds");
   Serial.println(",");
 
+  delay(1000); // 1 second delay
+
+  // Serial.print("~~~Start~~~");
+  // Serial.println(",");
+  Serial.print("Ch2: ");
+  Serial.println(",");
+  long int t3 = millis();
+  channel2();
+  long int t4 = millis();
+  Serial.print("~~~Ch2 End~~~");
+  Serial.println(",");
+  Serial.print("Channel 2 time: "); 
+  Serial.print(t4-t3); 
+  Serial.println(" milliseconds");
+  Serial.println(",");
+
+  delay(300000); // 1 second delay
+
+//    Serial.print(distanceCh1);
+//    Serial.print(",");
+//    Serial.println(distanceCh2);
+    
 } // End of void loop
 
-
-
-// Removed to test alt. pulse in function
-/*
 long channel1()
 {
     for(k=0; k < SAMPLE_LIMIT; k++)
@@ -149,5 +183,6 @@ long channel2()
         Serial.println(",");
         // return distanceCh2;
       }
+
+
 }
-*/
