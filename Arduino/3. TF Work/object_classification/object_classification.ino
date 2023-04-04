@@ -14,8 +14,13 @@ This code is used to run the generated model from my object detection project
 // **************************************** Globals ***************************************** /
 
 // Declaring arrays to hold channel sample data
-long channel1_array[10000];
+float channel1_array[10000];
 long channel2_array[10000];
+long tensor_array[10000][2];
+
+// int channel1_array[10000];
+// int channel2_array[10000];
+// int tensor_array[10000][2];
 
 
 /**********************************************************************************************/
@@ -44,26 +49,26 @@ static unsigned int pulseInFun(const byte pin, const byte state, const unsigned 
 /**********************************************************************************************/
 /**********************************************************************************************/
 
-#define echoPinCh1 9 //8 // Echo pin on sensor wired to Pin D8 on dev kit
-#define trigPinCh1 10 // // Echo pin on sensor wired to Pin D9 on dev kit
+#define echoPinCh1 8 //8 // Echo pin on sensor wired to Pin D8 on dev kit
+#define trigPinCh1 9 // // Echo pin on sensor wired to Pin D9 on dev kit
 #define echoPinCh2 2 // Echo pin on sensor wired to Pin D8 on dev kit
 #define trigPinCh2 3 // Echo pin on sensor wired to Pin D9 on dev kit
 // #define SAMPLE_LIMIT 20001
-#define SAMPLE_LIMIT 100001
+#define SAMPLES_LIMIT 10000
 
-long channel1();
-long channel2();
+// long channel1();
+// long channel2();
 
 
 // defines variables
-long durationCh1, durationCh2;  // Variable for the duration of sound wave travel
-long distanceCh1, distanceCh2;                   // Variable for the distance measurement
+float durationCh1, durationCh2;  // Variable for the duration of sound wave travel
+// long distanceCh1, distanceCh2;                   // Variable for the distance measurement
 long cm;
 int j, i;
 long k;
 
-const int numSamples = 10000;
-int samplesRead = numSamples;
+// const int NUM_SAMPLES = 10000;
+// int samplesRead = numSamples;
 
 // Global variable used for TF Lite Micro
 tflite::MicroErrorReporter tflErrorReporter;
@@ -111,7 +116,7 @@ void setup() {
   pinMode(echoPinCh2, INPUT);   // Sets the echoPin as an INPUT
   Serial.begin(9600);
   while(!Serial);
-  Serial.print("Ultrasonic Sensor Data Capture Start"); // Text to note start of data collection
+  Serial.print("Starting..."); // Text to note start of data collection
 
   // Get the TFL repsentation of the model byte array
   tflModel = tflite::GetModel(model);
@@ -131,39 +136,64 @@ void setup() {
   tflOutputTensor = tflInterpreter->output(0);
 }
 
-void loop() {
+void loop() 
+{
 
-  for(int i=1; i<10000; i++)
+  delay(1000);
+  Serial.print("In loop.."); // Text to note start of data collection
+  delay(10000); 
+  for(int i=1; i<SAMPLES_LIMIT; i++)
+  // while(SAMPLES_READ < NUM_SAMPLES)
+  
   {
-    Serial.print("In loop"); // Text to note start of data collection
     // Here I need to get my data samples, invoke the model and generate an output
     // Clears the trigPin condition
-    digitalWrite(trigPinCh2, LOW);
+    digitalWrite(trigPinCh1, LOW);
     delayMicroseconds(2);
 
     // Sets the trigPin HIGH (ACTIVE) for 10 microseconds, as required by sensor
-    digitalWrite(trigPinCh2, HIGH);
+    digitalWrite(trigPinCh1, HIGH);
     delayMicroseconds(10);
-    digitalWrite(trigPinCh2, LOW);
+    digitalWrite(trigPinCh1, LOW);
 
     // Reads the echoPin, returns the sound wave travel time in microseconds
     // I need to convert the long data type to int - this is for memory usage
-    durationCh2 =  pulseInFun(echoPinCh2, HIGH);
-    distanceCh2 = durationCh2 * 0.034 / 2;
+    durationCh1 =  pulseInFun(echoPinCh1, HIGH);
+    // distanceCh2 = durationCh2 * 0.034 / 2;
 
-    channel2_array[i] = durationCh2;
+    channel1_array[i] = durationCh1;
+    // tflInputTensor->data.f16[channel1_array[i]]; // See line 178, this line came from there
         
-    Serial.print(channel2_array[i]); // Text to note start of data collection
-  }
+    Serial.print(channel1_array[i]); // Text to note start of data collection
+    Serial.println(",");
+    i = i + 1;
 
-  
-
-  
-
-  // Serial.print("Ch1: ");
-  Serial.print(channel2_array[1]);
-  // Serial.print(distanceCh1);
-  // Serial.println(",");
-  // return distanceCh1;  
-
+    
+    if(i == SAMPLES_LIMIT) // SAMPLES_LIMIT = 10000
+    Serial.print("Here");
+    // =======================================================
+    // tensor_array[10000][1] = channel1_array;
+    // tensor_array[10000][2] = channel2_array;
+    // tflInputTensor->data.f[channel1_array];
+    tflInputTensor->data.f[channel1_array];
+    {
+      TfLiteStatus invokeStatus = tflInterpreter->Invoke();
+        if (invokeStatus != kTfLiteOk) 
+        {
+          Serial.println("Invoke failed!");
+          while (1);
+          return;
+        }
+    }
+    // Loop through the output tensor values from the model
+      for (int i = 0; i < NUM_GRIDS; i++) 
+      {
+        Serial.print(GRIDS[i]);
+        Serial.print(": ");
+        Serial.println(tflOutputTensor->data.f[i], 6);
+      }
+      //======================================================= */ 
+      // Serial.println();
+  }  
 }
+ 
