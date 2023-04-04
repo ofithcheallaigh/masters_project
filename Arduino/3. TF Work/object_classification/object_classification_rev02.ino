@@ -14,9 +14,14 @@ This code is used to run the generated model from my object detection project
 // **************************************** Globals ***************************************** /
 
 // Declaring arrays to hold channel sample data
-long channel1_array[10000];
-long channel2_array[10000];
-long tensor_array[10000][2];
+long channel1_array[1000];
+long channel2_array[1000];
+long tensor_array[1000][2];
+
+// float channel1_array[1000];
+// float channel2_array[1000];
+// float tensor_array[1000][2];
+
 
 
 /**********************************************************************************************/
@@ -53,19 +58,20 @@ static unsigned int pulseInFun(const byte pin, const byte state, const unsigned 
 #define SAMPLES_LIMIT 10001
 int SAMPLES_READ = 0;
 
-long channel1();
-long channel2();
+// long channel1();
+// long channel2();
 
 
 // defines variables
-long durationCh1, durationCh2;  // Variable for the duration of sound wave travel
-long distanceCh1, distanceCh2;                   // Variable for the distance measurement
+float durationCh1, durationCh2;  // Variable for the duration of sound wave travel
+// long durationCh1, durationCh2;  // Variable for the duration of sound wave travel
+// long distanceCh1, distanceCh2;                   // Variable for the distance measurement
 long cm;
 int j, i;
 long k;
 
-const int numSamples = 10000;
-int samplesRead = numSamples;
+const int NUM_SAMPLES = 10001;
+// int samples_read = num_samples;
 
 // Global variable used for TF Lite Micro
 tflite::MicroErrorReporter tflErrorReporter;
@@ -113,7 +119,7 @@ void setup() {
   pinMode(echoPinCh2, INPUT);   // Sets the echoPin as an INPUT
   Serial.begin(9600);
   while(!Serial);
-  Serial.print("Ultrasonic Sensor Data Capture Start"); // Text to note start of data collection
+  Serial.print("Starting..."); // Text to note start of data collection
 
   // Get the TFL repsentation of the model byte array
   tflModel = tflite::GetModel(model);
@@ -139,7 +145,7 @@ void loop() {
   Serial.print("In loop.."); // Text to note start of data collection
   delay(10000);
   // for(int i=1; i<SAMPLES_LIMIT; i++)
-  while(SAMPLES_READ < SAMPLES_LIMIT)
+  while(SAMPLES_READ < NUM_SAMPLES)
   {
     
     // Here I need to get my data samples, invoke the model and generate an output
@@ -155,7 +161,7 @@ void loop() {
     // Reads the echoPin, returns the sound wave travel time in microseconds
     // I need to convert the long data type to int - this is for memory usage
     durationCh1 =  pulseInFun(echoPinCh1, HIGH);
-    distanceCh1 = durationCh1 * 0.034 / 2;
+    // distanceCh1 = durationCh1 * 0.034 / 2;
 
     channel1_array[SAMPLES_READ] = durationCh1;
     channel2_array[SAMPLES_READ] = durationCh1;
@@ -169,6 +175,7 @@ void loop() {
     if(SAMPLES_READ == SAMPLES_LIMIT)
     // tensor_array[10000][1] = channel1_array;
     // tensor_array[10000][2] = channel2_array;
+    // tflInputTensor->data.f[channel1_array];
     tflInputTensor->data.f[channel1_array];
     {
       TfLiteStatus invokeStatus = tflInterpreter->Invoke();
@@ -199,4 +206,5 @@ void loop() {
   // Serial.println(",");
   // return distanceCh1;  
 
+}
 }
