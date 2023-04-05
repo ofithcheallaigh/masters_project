@@ -14,7 +14,7 @@ This code is used to run the generated model from my object detection project
 // **************************************** Globals ***************************************** /
 
 // Declaring arrays to hold channel sample data
-float channel1_array[10000];
+float channel1_array[3000];
 long channel2_array[10000];
 long tensor_array[10000][2];
 
@@ -54,7 +54,7 @@ static unsigned int pulseInFun(const byte pin, const byte state, const unsigned 
 #define echoPinCh2 2 // Echo pin on sensor wired to Pin D8 on dev kit
 #define trigPinCh2 3 // Echo pin on sensor wired to Pin D9 on dev kit
 // #define SAMPLE_LIMIT 20001
-#define SAMPLES_LIMIT 10000
+#define SAMPLES_LIMIT 3000
 
 // long channel1();
 // long channel2();
@@ -89,7 +89,7 @@ TfLiteTensor* tflOutputTensor = nullptr;
 // [tensorArenaSize] is the size of the array. In this case, the array has a size of tensorArenaSize bytes.
 // __attribute__((aligned(16))) is an attribute that tells the compiler to align the memory for 
 // the array on a 16-byte boundary.
-constexpr int tensorArenaSize = 8 * 1024;
+constexpr int tensorArenaSize = 10 * 1024;
 byte tensorArena[tensorArenaSize] __attribute__((aligned(16)));
 
 // Array to map grids
@@ -138,14 +138,17 @@ void setup() {
 
 void loop() 
 {
-
-  delay(1000);
-  Serial.print("In loop.."); // Text to note start of data collection
-  delay(10000); 
-  for(int i=1; i<SAMPLES_LIMIT; i++)
+  // delay(1000);
+  // Serial.print("In loop.."); // Text to note start of data collection
+  // delay(1000); 
+  // for(int i=1; i<SAMPLES_LIMIT; i++)
   // while(SAMPLES_READ < NUM_SAMPLES)
-  
-  {
+
+  // while(i < 3000) // SAMPLES_LIMIT = 10000
+  for(i=0; i<2000; i++)  
+  {  
+    // Serial.print("Here");
+
     // Here I need to get my data samples, invoke the model and generate an output
     // Clears the trigPin condition
     digitalWrite(trigPinCh1, LOW);
@@ -161,31 +164,37 @@ void loop()
     durationCh1 =  pulseInFun(echoPinCh1, HIGH);
     // distanceCh2 = durationCh2 * 0.034 / 2;
 
-    channel1_array[i] = durationCh1;
+    // channel1_array[i] = durationCh1;
     // tflInputTensor->data.f16[channel1_array[i]]; // See line 178, this line came from there
-        
-    Serial.print(channel1_array[i]); // Text to note start of data collection
-    Serial.println(",");
-    i = i + 1;
+    // tflInputTensor->data.f[i] = channel1_array[i];
 
-    
-    if(i == SAMPLES_LIMIT) // SAMPLES_LIMIT = 10000
-    Serial.print("Here");
+    // Serial.print(channel1_array[i]); // Text to note start of data collection
+    // Serial.println(",");
+
     // =======================================================
     // tensor_array[10000][1] = channel1_array;
     // tensor_array[10000][2] = channel2_array;
     // tflInputTensor->data.f[channel1_array];
-    tflInputTensor->data.f[channel1_array];
+    // tflInputTensor->data.f[channel1_array];
+    // tflInputTensor->data.f[i] = channel1_array[i];
+    tflInputTensor->data.f[i] = durationCh1;
+    delayMicroseconds(10);
+    // i = i + 1;
+    //Serial.println(i);
+    // delayMicroseconds(2);
+
+    if(i == 1900)
     {
       TfLiteStatus invokeStatus = tflInterpreter->Invoke();
-        if (invokeStatus != kTfLiteOk) 
-        {
-          Serial.println("Invoke failed!");
-          while (1);
-          return;
-        }
-    }
-    // Loop through the output tensor values from the model
+      Serial.println("Invoke");      
+      if (invokeStatus != kTfLiteOk) 
+      {
+        Serial.println("Invoke failed!");
+        while (1);
+        return;
+      }
+
+      // Loop through the output tensor values from the model
       for (int i = 0; i < NUM_GRIDS; i++) 
       {
         Serial.print(GRIDS[i]);
@@ -193,7 +202,9 @@ void loop()
         Serial.println(tflOutputTensor->data.f[i], 6);
       }
       //======================================================= */ 
-      // Serial.println();
-  }  
+      Serial.println();
+      delay(20000);
+    }
+  }
 }
  
