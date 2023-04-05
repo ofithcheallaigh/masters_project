@@ -14,8 +14,8 @@ This code is used to run the generated model from my object detection project
 // **************************************** Globals ***************************************** /
 
 // Declaring arrays to hold channel sample data
-float channel1_array[3000];
-long channel2_array[10000];
+float channel1_array[10000];
+float channel2_array[10000];
 long tensor_array[10000][2];
 
 // int channel1_array[10000];
@@ -54,7 +54,7 @@ static unsigned int pulseInFun(const byte pin, const byte state, const unsigned 
 #define echoPinCh2 2 // Echo pin on sensor wired to Pin D8 on dev kit
 #define trigPinCh2 3 // Echo pin on sensor wired to Pin D9 on dev kit
 // #define SAMPLE_LIMIT 20001
-#define SAMPLES_LIMIT 3000
+#define SAMPLES_LIMIT 10000
 
 // long channel1();
 // long channel2();
@@ -89,7 +89,7 @@ TfLiteTensor* tflOutputTensor = nullptr;
 // [tensorArenaSize] is the size of the array. In this case, the array has a size of tensorArenaSize bytes.
 // __attribute__((aligned(16))) is an attribute that tells the compiler to align the memory for 
 // the array on a 16-byte boundary.
-constexpr int tensorArenaSize = 10 * 1024;
+constexpr int tensorArenaSize = 35 * 1024;
 byte tensorArena[tensorArenaSize] __attribute__((aligned(16)));
 
 // Array to map grids
@@ -145,7 +145,7 @@ void loop()
   // while(SAMPLES_READ < NUM_SAMPLES)
 
   // while(i < 3000) // SAMPLES_LIMIT = 10000
-  for(i=0; i<2000; i++)  
+  for(i=0; i<5000; i++)  
   {  
     // Serial.print("Here");
 
@@ -177,14 +177,18 @@ void loop()
     // tflInputTensor->data.f[channel1_array];
     // tflInputTensor->data.f[channel1_array];
     // tflInputTensor->data.f[i] = channel1_array[i];
-    tflInputTensor->data.f[i] = durationCh1;
+    tflInputTensor->data.f[i+0] = durationCh1;
+    tflInputTensor->data.f[i+1] = durationCh1;
+
     delayMicroseconds(10);
     // i = i + 1;
-    //Serial.println(i);
+    // Serial.println(i);
     // delayMicroseconds(2);
+      
 
-    if(i == 1900)
-    {
+    if(i == 4999)
+    { 
+ 
       TfLiteStatus invokeStatus = tflInterpreter->Invoke();
       Serial.println("Invoke");      
       if (invokeStatus != kTfLiteOk) 
