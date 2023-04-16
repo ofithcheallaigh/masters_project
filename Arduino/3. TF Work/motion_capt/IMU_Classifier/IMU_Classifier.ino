@@ -125,6 +125,7 @@ void loop() {
   while (samplesRead < numSamples) {
     // check if new acceleration AND gyroscope data is available
     if (IMU.accelerationAvailable() && IMU.gyroscopeAvailable()) {
+/*      
       // read the acceleration and gyroscope data
       IMU.readAcceleration(aX, aY, aZ);
       IMU.readGyroscope(gX, gY, gZ);
@@ -137,6 +138,19 @@ void loop() {
       tflInputTensor->data.f[samplesRead * 6 + 3] = (gX + 2000.0) / 4000.0;
       tflInputTensor->data.f[samplesRead * 6 + 4] = (gY + 2000.0) / 4000.0;
       tflInputTensor->data.f[samplesRead * 6 + 5] = (gZ + 2000.0) / 4000.0;
+      */
+
+      IMU.readAcceleration(aX, aY, aZ);
+      IMU.readGyroscope(gX, gY, gZ);
+      
+      // normalize the IMU data between 0 to 1 and store in the model's
+      // input tensor
+      tflInputTensor->data.f[samplesRead * 6 + 0] = (aX + 4.0) / 8.0;
+      tflInputTensor->data.f[samplesRead * 6 + 1] = (aY + 4.0) / 8.0;
+      tflInputTensor->data.f[samplesRead * 6 + 2] = (aZ + 4.0) / 8.0;
+      tflInputTensor->data.f[samplesRead * 6 + 3] = (gX + 2000.0) / 4000.0;
+      tflInputTensor->data.f[samplesRead * 6 + 4] = (gY + 2000.0) / 4000.0;
+      tflInputTensor->data.f[samplesRead * 6 + 5] = (gZ + 2000.0) / 4000.0;      
 
       samplesRead++;
 
