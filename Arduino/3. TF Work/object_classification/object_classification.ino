@@ -9,7 +9,9 @@ This code is used to run the generated model from my object detection project
 #include <tensorflow/lite/schema/schema_generated.h>
 #include <tensorflow/lite/version.h>
 
-#include "object_model_50_128_sdg.h"
+#include "model.h"
+
+const float distanceThreshold = 2.5; // threshold of significant in G's
 
 // **************************************** Globals ***************************************** /
 
@@ -61,7 +63,9 @@ static unsigned int pulseInFun(const byte pin, const byte state, const unsigned 
 
 
 // defines variables
-float durationCh1, durationCh2;  // Variable for the duration of sound wave travel
+const int numSamples = 5000;
+int samplesRead = numSamples;
+// float durationCh1, durationCh2;  // Variable for the duration of sound wave travel
 // long distanceCh1, distanceCh2;                   // Variable for the distance measurement
 long cm;
 int j, i;
@@ -79,7 +83,6 @@ tflite::AllOpsResolver tflOpsResolver;
 
 // Used to declare a variable that will be used to store a reference to a TF Lite model
 const tflite::Model* tflModel = nullptr;
-
 tflite::MicroInterpreter* tflInterpreter = nullptr;
 TfLiteTensor* tflInputTensor = nullptr;
 TfLiteTensor* tflOutputTensor = nullptr;
@@ -138,14 +141,20 @@ void setup() {
 
 void loop() 
 {
+  float durationCh1, durationCh2;  // Variable for the duration of sound wave travel
   // delay(1000);
   // Serial.print("In loop.."); // Text to note start of data collection
   // delay(1000); 
   // for(int i=1; i<SAMPLES_LIMIT; i++)
   // while(SAMPLES_READ < NUM_SAMPLES)
 
-  // while(i < 3000) // SAMPLES_LIMIT = 10000
-  for(i=0; i<5000; i++)  
+  while(samplesRead ==  numSamples) // SAMPLES_LIMIT = 10000
+  {
+    samplesRead = 0;
+    break;
+  }
+  // for(i=0; i<5000; i++)  
+  while(samplesRead < numSamples)
   {  
     // Serial.print("Here");
 
@@ -177,16 +186,22 @@ void loop()
     // tflInputTensor->data.f[channel1_array];
     // tflInputTensor->data.f[channel1_array];
     // tflInputTensor->data.f[i] = channel1_array[i];
-    tflInputTensor->data.f[i+0] = durationCh1;
-    tflInputTensor->data.f[i+1] = durationCh1;
+    // tflInputTensor->data.f[i*2+0] = durationCh1;
+    // tflInputTensor->data.f[i*2+1] = durationCh1+2;
+    tflInputTensor->data.f[samplesRead+0] = 2200;
+    tflInputTensor->data.f[samplesRead+1] = 2010;
 
-    delayMicroseconds(10);
+    samplesRead++;    
+    // Serial.println(durationCh1);
+
+    // delayMicroseconds(10);
     // i = i + 1;
     // Serial.println(i);
     // delayMicroseconds(2);
       
 
-    if(i == 4999)
+    // if(i == 4999)
+    if(samplesRead == numSamples)
     { 
  
       TfLiteStatus invokeStatus = tflInterpreter->Invoke();
@@ -207,7 +222,7 @@ void loop()
       }
       //======================================================= */ 
       Serial.println();
-      delay(20000);
+      delay(2000);
     }
   }
 }
