@@ -1,5 +1,29 @@
 /*
 This code is used to run the generated model from my object detection project
+
+Python code:  X_train.shape, X_test.shape, y_train.shape, y_test.shape
+Generates:    ((134000, 2), (66000, 2), (134000,), (66000,))
+
+
+
+https://www.programiz.com/c-programming/online-compiler/
+#include <stdio.h>
+
+int main() {
+    int array[10][2];   
+    // Fill the array with values
+    
+    for (int i = 0; i < 10; i++) {
+      for (int j = 0; j < 2; j++) {
+        printf("%d ", array[i][j]);
+      }
+      printf("\n");
+    }
+    printf("\n");
+    return 0;
+}
+
+
 */
 
 #include <TensorFlowLite.h>
@@ -42,7 +66,7 @@ TfLiteTensor* tflOutputTensor = nullptr;
 // [tensorArenaSize] is the size of the array. In this case, the array has a size of tensorArenaSize bytes.
 // __attribute__((aligned(16))) is an attribute that tells the compiler to align the memory for 
 // the array on a 16-byte boundary.
-constexpr int tensorArenaSize = 40 * 1024;
+constexpr int tensorArenaSize = 60 * 1024;
 byte tensorArena[tensorArenaSize] __attribute__((aligned(16)));
 
 // Array to map grids
