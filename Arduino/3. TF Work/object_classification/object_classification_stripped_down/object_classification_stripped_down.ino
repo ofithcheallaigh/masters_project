@@ -32,8 +32,18 @@ int main() {
 #include <tensorflow/lite/micro/micro_interpreter.h>
 #include <tensorflow/lite/schema/schema_generated.h>
 #include <tensorflow/lite/version.h>
+#include <tensorflow/lite/c/common.h>
 
 #include "model.h"
+
+const int kInputHeight = 5000;
+const int kInputWidth = 2;
+const int kInputDepth = 1;  // Assume input is a single channel
+
+float arr[5000][2]; // 2D array of size 5x2
+float float_array[5000][2];
+// float floatData[5000 * 2];
+float data_array[5000][2];
 
 
 // defines variables
@@ -44,6 +54,13 @@ int samplesRead = numSamples;
 long cm;
 int j, i;
 long k;
+
+// Create a 2D array to hold your input data
+float input_data[5000][2];  // Assumes 1000 rows and 2 columns
+float arrayOne[5000]; // Declare the array with 5000 elements
+float arrayTwo[5000]; // Declare the array with 5000 elements
+float valueOne = 70; // Replace 1.23 with the desired float value
+float valueTwo = 2000; // Replace 1.23 with the desired float value
 
 // const int NUM_SAMPLES = 10000;
 // int samplesRead = numSamples;
@@ -60,6 +77,22 @@ const tflite::Model* tflModel = nullptr;
 tflite::MicroInterpreter* tflInterpreter = nullptr;
 TfLiteTensor* tflInputTensor = nullptr;
 TfLiteTensor* tflOutputTensor = nullptr;
+
+// TfLiteTensor* input_tensor;
+// TfLiteTensor* output_tensor;
+
+// The 2D array of 5000 rows and 2 columns.
+// float** data_array = (float**)malloc(5000 * sizeof(float*));
+/*
+float** data_array = (float**)malloc(5000 * sizeof(float*));
+for(int k = 0; k < 5000; k++) 
+{
+  data_array1[k] = malloc(2 * sizeof(float));
+}
+*/
+
+// The float array.
+// float* floatData = malloc(5000 * 2 * sizeof(float));
 
 // Create a memory buffer in the micro:
 // byte define the type of the array and `tensorArena` is the name of the array.
@@ -106,11 +139,28 @@ void setup() {
   // Pointers for the model input and output tensors
   tflInputTensor = tflInterpreter->input(0);
   tflOutputTensor = tflInterpreter->output(0);
+
+  // Get a pointer to the input tensor data.
+  // float* input_data_ptr = tflInputTensor->data.f;
 }
 
 void loop() 
 {
   float durationCh1, durationCh2;  // Variable for the duration of sound wave travel
+  // float* input_data_ptr = tflInputTensor->data.f;
+  // Pointers for the model input and output tensors
+  tflInputTensor = tflInterpreter->input(0);
+  tflOutputTensor = tflInterpreter->output(0);
+
+  // Initialize all elements of the array with the same float value
+for(int i = 0; i < 5000; i++)
+  {
+      arr[i][0] = valueOne;
+  }
+for(int i = 0; i < 5000; i++)
+  {
+      arr[i][1] = valueTwo;
+  }
 
   while(samplesRead ==  numSamples) // SAMPLES_LIMIT = 10000
   {
@@ -121,11 +171,32 @@ void loop()
   while(samplesRead < numSamples)
   {  
 
-    tflInputTensor->data.f[samplesRead*2+0] = 4512.00;
-    tflInputTensor->data.f[samplesRead*2+1] = 4428.00;
+    // tflInputTensor->setData(&input_data[0][0], sizeof(float) * kInputHeight * kInputWidth * kInputDepth);
+
+    // tflInputTensor->data.f[samplesRead*2+0] = 4512.00;
+    // tflInputTensor->data.f[samplesRead*2+1] = 4428.00;
+
+    // Flatten the 2D array into a 1D array and copy it into the input tensor.
+  
+    // Convert the 2D array to a float array.
+    // Convert the 2D array to a float array.
+    // float[] floatData = new float[5000 * 2];
+    for (int i = 0; i < 5000; i++) 
+    {
+      for (int j = 0; j < 2; j++) 
+      {
+        // floatData[i * 2 + j] = data[i][j];
+        // tflInputTensor->data.f[i * 2 + j] = data_array[i][j];
+        tflInputTensor->data.f[i * 2 + j] = arr[i][j];
+      }
+    }
+  
+    // Write the float array to the input tensor.
+    // tflWriteTensor(input_tensor, floatData, 5000 * 2 * sizeof(float)); 
+    // tflWriteTensor(tflInputTensor, floatData, 5000 * 2 * sizeof(float));
 
     samplesRead++;    
-    Serial.println(samplesRead);
+    //Serial.println(samplesRead);
 
     if(samplesRead == numSamples)
     { 
