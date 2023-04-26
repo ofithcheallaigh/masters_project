@@ -26,6 +26,10 @@ int main() {
 
 */
 
+#include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
+
 #include <TensorFlowLite.h>
 #include <tensorflow/lite/micro/all_ops_resolver.h>
 #include <tensorflow/lite/micro/tflite_bridge/micro_error_reporter.h> // Had to add "tflite_bridge"
@@ -54,13 +58,47 @@ int samplesRead = numSamples;
 long cm;
 int j, i;
 long k;
+long randomNumber1, randomNumber2;
 
 // Create a 2D array to hold your input data
 float input_data[5000][2];  // Assumes 1000 rows and 2 columns
 float arrayOne[5000]; // Declare the array with 5000 elements
 float arrayTwo[5000]; // Declare the array with 5000 elements
-float valueOne = 70; // Replace 1.23 with the desired float value
-float valueTwo = 2000; // Replace 1.23 with the desired float value
+float valueOne = 100; // Replace 1.23 with the desired float value 
+float valueTwo = 10296; // Replace 1.23 with the desired float value 
+
+/**********************************************************************************************/
+// *** Taken from: https://forum.arduino.cc/t/nano-ble-sense-and-ultrasonic-sensor/626958/3 ***/
+/**********************************************************************************************/
+// function prototype to define default timeout value
+static unsigned int pulseInFun(const byte pin, const byte state, const unsigned long timeout = 1000000L);
+
+// using a macro to avoid function call overhead
+#define WAIT_FOR_PIN_STATE(state) \
+  while (digitalRead(pin) != (state)) { \
+    if (micros() - timestamp > timeout) { \
+      return 0; \
+    } \
+  }
+
+static unsigned int pulseInFun(const byte pin, const byte state, const unsigned long timeout) {
+  unsigned long timestamp = micros();
+  WAIT_FOR_PIN_STATE(!state);
+  WAIT_FOR_PIN_STATE(state);
+  timestamp = micros();
+  WAIT_FOR_PIN_STATE(!state);
+  return micros() - timestamp;
+}
+/**********************************************************************************************/
+/**********************************************************************************************/
+/**********************************************************************************************/
+
+#define echoPinCh1 8 //8 // Echo pin on sensor wired to Pin D8 on dev kit
+#define trigPinCh1 9 // // Echo pin on sensor wired to Pin D9 on dev kit
+#define echoPinCh2 2 // Echo pin on sensor wired to Pin D8 on dev kit
+#define trigPinCh2 3 // Echo pin on sensor wired to Pin D9 on dev kit
+// #define SAMPLE_LIMIT 20001
+#define SAMPLES_LIMIT 10000
 
 // const int NUM_SAMPLES = 10000;
 // int samplesRead = numSamples;
@@ -119,6 +157,13 @@ const char* GRIDS[] = {
 #define NUM_GRIDS (sizeof(GRIDS) / sizeof(GRIDS[0]))
 
 void setup() {
+  // randomNumber1 = random(300);
+  
+  pinMode(trigPinCh1, OUTPUT);  // Sets the trigPin as an OUTPUT
+  pinMode(echoPinCh1, INPUT);   // Sets the echoPin as an INPUT
+  pinMode(trigPinCh2, OUTPUT);  // Sets the trigPin as an OUTPUT
+  pinMode(echoPinCh2, INPUT);   // Sets the echoPin as an INPUT
+
   Serial.begin(9600);
   while(!Serial);
   Serial.print("Starting..."); // Text to note start of data collection
@@ -142,25 +187,66 @@ void setup() {
 
   // Get a pointer to the input tensor data.
   // float* input_data_ptr = tflInputTensor->data.f;
+  randomSeed(42);
 }
 
 void loop() 
 {
+  randomNumber1 = random(1,50); 
+  randomNumber2 = random(1,300); 
   float durationCh1, durationCh2;  // Variable for the duration of sound wave travel
   // float* input_data_ptr = tflInputTensor->data.f;
   // Pointers for the model input and output tensors
+
+  // tflInputTensor = tflInterpreter->input(0);
+  // tflOutputTensor = tflInterpreter->output(0);
   tflInputTensor = tflInterpreter->input(0);
   tflOutputTensor = tflInterpreter->output(0);
 
+  
   // Initialize all elements of the array with the same float value
-for(int i = 0; i < 5000; i++)
+  // for(int i = 0; i < 5000; i++)
+  for(int i = 0; i < 5000; i++)
   {
-      arr[i][0] = valueOne;
+    // Here I need to get my data samples, invoke the model and generate an output
+    // Clears the trigPin condition
+    digitalWrite(trigPinCh1, LOW);
+    delayMicroseconds(2);
+
+    // Sets the trigPin HIGH (ACTIVE) for 10 microseconds, as required by sensor
+    digitalWrite(trigPinCh1, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPinCh1, LOW);
+
+    // Reads the echoPin, returns the sound wave travel time in microseconds
+    // I need to convert the long data type to int - this is for memory usage
+    durationCh1 =  pulseInFun(echoPinCh1, HIGH);
+    durationCh1 = float(durationCh1);
+    // durationCh1 = valueOne + randomNumber1;
+    arr[i][0] = durationCh1;
+    // Serial.print("Duration1: ");
+    // Serial.println(durationCh1);
   }
-for(int i = 0; i < 5000; i++)
+  for(int i = 0; i < 5000; i++)
   {
-      arr[i][1] = valueTwo;
-  }
+    digitalWrite(trigPinCh1, LOW);
+    delayMicroseconds(2);
+
+    // Sets the trigPin HIGH (ACTIVE) for 10 microseconds, as required by sensor
+    digitalWrite(trigPinCh1, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPinCh1, LOW);
+
+    // Reads the echoPin, returns the sound wave travel time in microseconds
+    // I need to convert the long data type to int - this is for memory usage
+    durationCh2 =  pulseInFun(echoPinCh1, HIGH);
+    durationCh2 = float(durationCh1);
+    // durationCh2 = valueTwo + randomNumber1;
+    arr[i][1] = durationCh2;
+    // Serial.print("Duration2: ");
+    // Serial.println(durationCh1 + randomNumber2);
+    }
+  
 
   while(samplesRead ==  numSamples) // SAMPLES_LIMIT = 10000
   {
@@ -168,59 +254,37 @@ for(int i = 0; i < 5000; i++)
     break;
   }
   // for(i=0; i<5000; i++)  
-  while(samplesRead < numSamples)
-  {  
 
-    // tflInputTensor->setData(&input_data[0][0], sizeof(float) * kInputHeight * kInputWidth * kInputDepth);
-
-    // tflInputTensor->data.f[samplesRead*2+0] = 4512.00;
-    // tflInputTensor->data.f[samplesRead*2+1] = 4428.00;
-
-    // Flatten the 2D array into a 1D array and copy it into the input tensor.
-  
-    // Convert the 2D array to a float array.
-    // Convert the 2D array to a float array.
-    // float[] floatData = new float[5000 * 2];
-    for (int i = 0; i < 5000; i++) 
+  for (int i = 0; i < 5000; i++) 
+  {
+    for (int j = 0; j < 2; j++) 
     {
-      for (int j = 0; j < 2; j++) 
-      {
-        // floatData[i * 2 + j] = data[i][j];
-        // tflInputTensor->data.f[i * 2 + j] = data_array[i][j];
-        tflInputTensor->data.f[i * 2 + j] = arr[i][j];
-      }
-    }
-  
-    // Write the float array to the input tensor.
-    // tflWriteTensor(input_tensor, floatData, 5000 * 2 * sizeof(float)); 
-    // tflWriteTensor(tflInputTensor, floatData, 5000 * 2 * sizeof(float));
-
-    samplesRead++;    
-    //Serial.println(samplesRead);
-
-    if(samplesRead == numSamples)
-    { 
- 
-      TfLiteStatus invokeStatus = tflInterpreter->Invoke();
-      Serial.println("Invoke");      
-      if (invokeStatus != kTfLiteOk) 
-      {
-        Serial.println("Invoke failed!");
-        while (1);
-        return;
-      }
-
-      // Loop through the output tensor values from the model
-      for (int i = 0; i < NUM_GRIDS; i++) 
-      {
-        Serial.print(GRIDS[i]);
-        Serial.print(": ");
-        Serial.println(tflOutputTensor->data.f[i],9); // The int here gives the decimal places
-      }
-      //======================================================= */ 
-      Serial.println();
-      delay(2000);
+      // floatData[i * 2 + j] = data[i][j];
+      // tflInputTensor->data.f[i * 2 + j] = data_array[i][j];
+      tflInputTensor->data.f[i * 2 + j] = arr[i][j];
     }
   }
+  // if(samplesRead == numSamples)
+  // { 
+    TfLiteStatus invokeStatus = tflInterpreter->Invoke();
+    Serial.println("Invoke");      
+    if (invokeStatus != kTfLiteOk) 
+    {
+      Serial.println("Invoke failed!");
+      while (1);
+      return;
+    }
+
+    // Loop through the output tensor values from the model
+    for (int i = 0; i < NUM_GRIDS; i++) 
+    {
+      Serial.print(GRIDS[i]);
+      Serial.print(": ");
+      Serial.println(tflOutputTensor->data.f[i],2); // The int here gives the decimal places
+    }
+    //======================================================= */ 
+    Serial.println();
+    delay(2000);
+  // }
 }
  
