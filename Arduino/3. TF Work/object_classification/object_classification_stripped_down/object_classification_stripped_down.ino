@@ -39,6 +39,8 @@ int main() {
 #include <tensorflow/lite/c/common.h>
 
 #include "model.h"
+#include "channel1.h" // input_array_1
+#include "channel2.h" // input_array_2
 
 const int kInputHeight = 5000;
 const int kInputWidth = 2;
@@ -192,6 +194,7 @@ void setup() {
 
 void loop() 
 {
+  Serial.println("In void loop");
   randomNumber1 = random(1,50); 
   randomNumber2 = random(1,300); 
   float durationCh1, durationCh2;  // Variable for the duration of sound wave travel
@@ -223,9 +226,8 @@ void loop()
     durationCh1 =  pulseInFun(echoPinCh1, HIGH);
     durationCh1 = float(durationCh1);
     // durationCh1 = valueOne + randomNumber1;
-    arr[i][0] = durationCh1;
-    // Serial.print("Duration1: ");
-    // Serial.println(durationCh1);
+    // arr[i][0] = durationCh1;
+    arr[i][0] = input_array_1[i];
   }
   for(int i = 0; i < 5000; i++)
   {
@@ -242,11 +244,23 @@ void loop()
     durationCh2 =  pulseInFun(echoPinCh1, HIGH);
     durationCh2 = float(durationCh1);
     // durationCh2 = valueTwo + randomNumber1;
-    arr[i][1] = durationCh2;
-    // Serial.print("Duration2: ");
-    // Serial.println(durationCh1 + randomNumber2);
+    arr[i][1] = input_array_2[i];
     }
   
+    Serial.println("Reshaping Data");
+    // Reshape the input data into a 3D array of shape [1, 5000, 2]
+    float reshaped_data[1][5000][2];
+    for (int i = 0; i < 5000; i++) {
+        for (int j = 0; j < 2; j++) {
+            reshaped_data[0][i][j] = input_data[i][j];
+        }
+    }
+
+    // Print the first few values of the reshaped data for verification
+    for (int i = 0; i < 5; i++) {
+        Serial.println(reshaped_data[0][i][0]);
+        Serial.println(reshaped_data[0][i][1]);
+    }
 
   while(samplesRead ==  numSamples) // SAMPLES_LIMIT = 10000
   {
