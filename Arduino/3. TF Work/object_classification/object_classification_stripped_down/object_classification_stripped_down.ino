@@ -275,7 +275,8 @@ void loop()
     {
       // floatData[i * 2 + j] = data[i][j];
       // tflInputTensor->data.f[i * 2 + j] = data_array[i][j];
-      tflInputTensor->data.f[i * 2 + j] = arr[i][j];
+      // tflInputTensor->data.f[i * 2 + j] = arr[i][j];
+      tflInputTensor->data.f[i * 2 + j] = reshaped_data[0][i][j];
     }
   }
   // if(samplesRead == numSamples)
