@@ -64,30 +64,31 @@ dataset2 = modify_to_grid_zero_fn(new_dataset)
 
 data = np.vstack((dataset1,dataset2)) # Create a variable with one dataset stacked on the other """
 
-data = np.vstack((dataset2,dataset3,dataset4))
+# data = np.vstack((dataset1,dataset2,dataset3,dataset4))
+data = np.vstack((dataset1))
 # data = data.drop("Var1",axis=1)
-data = pd.DataFrame(data) # Convert to DataFrame
+# data = pd.DataFrame(data) # Convert to DataFrame
 data.columns=["Channel1","Channel2","LabelObject","Grid"] # Assign column names
 # data.to_csv('grid0_storagebox_clearhallway.csv') # This was here to output a text file to show Ian
 
 # For new_data
-new_data = ((dataset1))
-new_data = pd.DataFrame(new_data) # Convert to DataFrame
-new_data.columns=["Channel1","Channel2","LabelObject","Grid"] # Assign column names
+# new_data = ((dataset1))
+# new_data = pd.DataFrame(new_data) # Convert to DataFrame
+# new_data.columns=["Channel1","Channel2","LabelObject","Grid"] # Assign column names
 
 # pick out rows depending on grid num
 # This was added in to just pick out grid pos 1
 # grid1_data = data.loc[data['Grid']==1]
 # data = grid1_data
 
-# feature_names = ['Channel1','Channel2'] # Features we are interested in
-feature_names = ['Channel1'] # Features we are interested in
+feature_names = ['Channel1','Channel2'] # Features we are interested in
+# feature_names = ['Channel1'] # Features we are interested in
 # response = data['Grid'] # Response we are interested in
-# response = data['LabelObject'] # Response we are interested in
+response = data['LabelObject'] # Response we are interested in
 
 # Replaces Yes/No with 1/0. Required because some algo will not accept categorical data
 data.LabelObject.replace(('Yes', 'No'), (1, 0), inplace=True) 
-new_data.LabelObject.replace(('Yes', 'No'), (1, 0), inplace=True)
+# new_data.LabelObject.replace(('Yes', 'No'), (1, 0), inplace=True)
 
 # dataset2 = modify_to_grid_zero_fn(dataset2) 
 
@@ -96,9 +97,9 @@ X = data[feature_names]
 # y = data['LabelObject']
 y = data['Grid']
 
-X_new_data = new_data[feature_names]
+# X_new_data = new_data[feature_names]
 # y_new_data = new_data['LabelObject']
-y_new_data = new_data['Grid']
+# y_new_data = new_data['Grid']
 
 
 # cmap = cm.get_cmap('gnuplot')
@@ -116,16 +117,16 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 # This will be where I will gather my train data that the system has not been tested on
-X_train_new_data, X_test_new_data, y_train_new_data, y_test_new_data = train_test_split(X_new_data, y_new_data, random_state=0) # train_test_split is the best way to slipt up the data
-scaler=MinMaxScaler() # Using a scaler because there can be a lot of variability in the data values
-X_train_new_data = scaler.fit_transform(X_train_new_data)
-X_test_new_data = scaler.transform(X_test_new_data)
+# X_train_new_data, X_test_new_data, y_train_new_data, y_test_new_data = train_test_split(X_new_data, y_new_data, random_state=0) # train_test_split is the best way to slipt up the data
+# scaler=MinMaxScaler() # Using a scaler because there can be a lot of variability in the data values
+# X_train_new_data = scaler.fit_transform(X_train_new_data)
+# X_test_new_data = scaler.transform(X_test_new_data)
 
 y_train=y_train.astype('int')
 y_test=y_test.astype('int')
 
-y_train_new_data=y_train_new_data.astype('int')
-y_test_new_data=y_test_new_data.astype('int')
+# y_train_new_data=y_train_new_data.astype('int')
+# y_test_new_data=y_test_new_data.astype('int')
 
 
 # This is called when wanting to look at the plot to help determine the number of 
@@ -138,45 +139,45 @@ y_test_new_data=y_test_new_data.astype('int')
 logReg = LogisticRegression()
 logReg.fit(X_train, y_train)
 print('Accuracy of Logistic regression classifier on training set: {:.2f}'.format(logReg.score(X_train, y_train))) 
-# print('Accuracy of Logistic regression classifier on test set: {:.2f}'.format(logReg.score(X_test, y_test))) 
+print('Accuracy of Logistic regression classifier on test set: {:.2f}'.format(logReg.score(X_test, y_test))) 
 
 # Below is used for the unseen data
-print('Accuracy of Logistic regression classifier on test set: {:.2f}'.format(logReg.score(X_test_new_data, y_test_new_data))) 
+# print('Accuracy of Logistic regression classifier on test set: {:.2f}'.format(logReg.score(X_test_new_data, y_test_new_data))) 
 
 # Model: Decision tree
 clf = DecisionTreeClassifier().fit(X_train, y_train)
 print('Accuracy of Decision Tree classifier on training set: {:.2f}'.format(clf.score(X_train, y_train))) 
-# print('Accuracy of Decision Tree classifier on test set: {:.2f}'.format(clf.score(X_test, y_test))) 
+print('Accuracy of Decision Tree classifier on test set: {:.2f}'.format(clf.score(X_test, y_test))) 
 
 # Below is used for the unseen data
-print('Accuracy of Decision Tree classifier on test set: {:.2f}'.format(clf.score(X_test_new_data, y_test_new_data))) 
+# print('Accuracy of Decision Tree classifier on test set: {:.2f}'.format(clf.score(X_test_new_data, y_test_new_data))) 
 
 # Model: KNN
 knn = KNeighborsClassifier()
 knn.fit(X_train,y_train)
 print('Accuracy of K-NN classifier on training set: {:.2f}'.format(knn.score(X_train, y_train))) 
-# print('Accuracy of K-NN classifier on test set: {:.2f}'.format(knn.score(X_test, y_test))) 
+print('Accuracy of K-NN classifier on test set: {:.2f}'.format(knn.score(X_test, y_test))) 
 
 # Below is used for the unseen data
-print('Accuracy of K-NN classifier on test set: {:.2f}'.format(knn.score(X_test_new_data, y_test_new_data))) 
+# print('Accuracy of K-NN classifier on test set: {:.2f}'.format(knn.score(X_test_new_data, y_test_new_data))) 
 
 # Model: Linear Discriminant Analysis
 lda = LinearDiscriminantAnalysis()
 lda.fit(X_train, y_train)
 print('Accuracy of LDA classifier on training set: {:.2f}'.format(lda.score(X_train, y_train))) 
-# print('Accuracy of LDA classifier on test set: {:.2f}'.format(lda.score(X_test, y_test))) 
+print('Accuracy of LDA classifier on test set: {:.2f}'.format(lda.score(X_test, y_test))) 
 
 # Below is used for the unseen data
-print('Accuracy of LDA classifier on test set: {:.2f}'.format(lda.score(X_test_new_data, y_test_new_data))) 
+# print('Accuracy of LDA classifier on test set: {:.2f}'.format(lda.score(X_test_new_data, y_test_new_data))) 
 
 # Model: Gaussian Naive Bayes
 gnb = GaussianNB()
 gnb.fit(X_train, y_train)
 print('Accuracy of GNB classifier on training set: {:.2f}'.format(gnb.score(X_train, y_train)))
-# print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test))) 
+print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test, y_test))) 
 
 # Below is used for the unseen data
-print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test_new_data, y_test_new_data))) 
+# print('Accuracy of GNB classifier on test set: {:.2f}'.format(gnb.score(X_test_new_data, y_test_new_data))) 
 
 """ # Model: SVM
 svm = SVC()
