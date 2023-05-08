@@ -18,11 +18,12 @@
 
 // Declare the 3D array of data.
 float reshaped_data[1][5000][2];
+// float reshaped_data[1][5000][2][1];
 
 // Declare the 2D array of data.
 float output_data[5000][2];
 
-float input_data[1][5000][2];
+// float input_data[1][5000][2];
 
 // Global variable used for TF Lite Micro
 tflite::MicroErrorReporter tflErrorReporter;
@@ -42,8 +43,16 @@ byte tensorArena[tensorArenaSize] __attribute__((aligned(16)));
 
 // Array to map grids
 const char* GRIDS[] = {
-  "Yes",
-  "No"         
+  "Zero",
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+  "Nine",       
 };
 
 #define NUM_GRIDS (sizeof(GRIDS) / sizeof(GRIDS[0]))
@@ -57,10 +66,11 @@ void setup() {
 
     // Get the TFL repsentation of the model byte array
   tflModel = tflite::GetModel(model);
-    if (tflModel->version() != TFLITE_SCHEMA_VERSION) {
-    Serial.println("Model schema mismatch!");
-    while (1);
-  }
+    if (tflModel->version() != TFLITE_SCHEMA_VERSION) 
+    {
+      Serial.println("Model schema mismatch!");
+      while (1);
+    }
   
   // Generate an interpretor to run the model
   tflInterpreter = new tflite::MicroInterpreter(tflModel, tflOpsResolver, tensorArena, tensorArenaSize);  
@@ -73,32 +83,30 @@ void setup() {
   tflOutputTensor = tflInterpreter->output(0);
 
 
-  // int output_shape[] = {1, 2};
-  // TfLiteTensor* output_tensor = interpreter->output(0);
-  // tflOutputTensor->dims->data[0] = output_shape[0];
-  // tflOutputTensor->dims->data[1] = output_shape[1];
+  int output_shape[] = {1, 10};
+  // TfLiteTensor* output_tensor = Interpreter->output(0);
+  tflOutputTensor->dims->data[0] = output_shape[0];
+  tflOutputTensor->dims->data[1] = output_shape[1];
 
   // Get a pointer to the output tensor data
-  float* output_data = tflOutputTensor->data.f;
+  // float* output_data = tflOutputTensor->data.f;
 }
 
-void loop() {
-  // for(int k=0;k<5000;k++){
-    // Serial.println(input_array_1[k]);
-  // }
-
-
+void loop() 
+{
   // Copy the data from `input_array_1` to the first column of `output_data`.
   Serial.println("Building array from input_array_1");
-  for (int i = 0; i < 5000; i++) {
+  for (int i = 0; i < 5000; i++) 
+  {
     output_data[i][0] = input_array_1[i];
     // Serial.println(i);
   }
 
   // Copy the data from `input_array_2` to the second column of `output_data`.
   Serial.println("Building array from input_array_2");
-  for (int i = 0; i < 5000; i++) {
-    // output_data[i][1] = input_array_2[i];
+  for (int i = 0; i < 5000; i++) 
+  {
+    output_data[i][1] = input_array_2[i];
   }
 
   // Fill the array with data 
@@ -122,7 +130,8 @@ void loop() {
   }
   */
   // Copy the data to the reshaped array 
-  for (int i = 0; i < 5000; i++) { 
+  for (int i = 0; i < 5000; i++) 
+  { 
     reshaped_data[0][i][0] = output_data[i][0]; 
     reshaped_data[0][i][1] = output_data[i][1]; 
   }
@@ -130,12 +139,15 @@ void loop() {
   // Serial.println(",");
   // Serial.print("Finished reshaping ...");
   
-  for (int i = 0; i < 5000; i++) {
-    for (int j = 0; j < 2; j++) {
+  for (int i = 0; i < 5000; i++) 
+  {
+    for (int j = 0; j < 2; j++) 
+    {
         float value = reshaped_data[0][i][j];
+        // float value = reshaped_data[0][i][j][0];
         int input_index = j + i * 2;
         // tflInputTensor->data.f[input_index] = value;
-        tflInputTensor->data.f[input_index] = 100;
+        tflInputTensor->data.f[input_index] = value;
     }
   }
 
@@ -164,6 +176,7 @@ void loop() {
     }
 
     // Check the output tensor shape
+    /*
     int output_num_dims = tflOutputTensor->dims->size;
     Serial.print("Output tensor shape: [");
     for (int i = 0; i < output_num_dims; i++) {
@@ -174,6 +187,7 @@ void loop() {
       }
     }
     Serial.println("]");
+    */
 
     // Loop through the output tensor values from the model
     for (int i = 0; i < NUM_GRIDS; i++) 
