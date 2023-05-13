@@ -5,16 +5,16 @@ data_folder = "D:\Courses\UUJ\Research Project\masters_project\MATLAB\Data";
 % run_folder = pwd;
 
 cd(data_folder);
-% [file,path] = uigetfile('*.csv','Select One or More Files','MultiSelect','on');
+[file,path] = uigetfile('*.csv','Select One or More Files','MultiSelect','on');
 % filename_split = split(file,'_');
 
-% input_table = readtable(strcat(path,file));
-input_table = [a; b; c; d]; % Only used when manually entering data
+input_table = readtable(strcat(path,file));
+% input_table = [a; b; c; d]; % Only used when manually entering data
 
 inputTable = input_table;
 
-% fname = string(strcat(filename_split(2), '.txt'));
-% fileID = fopen(fname,'w');
+fname = string(strcat(filename_split(2), '.txt'));
+fileID = fopen(fname,'w');
 
 % Scatter plotting
 for i = 1:9
@@ -46,7 +46,9 @@ for i = 1:9
     scatter(plotTable.Channel1, plotTable.Channel2,'color',colourArray{i},'marker','+')
     % title('meh')
     hold on
-    % title('Meh');
+    title('grid0_storagebox_clearhallway','Interpreter', 'none');
+    xlabel("Channel1")
+    ylabel("Channel2")
     
 end
 % fclose(fileID);

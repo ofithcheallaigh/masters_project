@@ -151,7 +151,7 @@ void loop()
     }
   }
 
-  Serial.println("Blah");
+  // Serial.println("Blah");
   
   delay(5000);
   /*
@@ -194,7 +194,7 @@ void loop()
     {
       Serial.print(GRIDS[i]);
       Serial.print(": ");
-      Serial.println(tflOutputTensor->data.f[i],2); // The int here gives the decimal places
+      Serial.println(tflOutputTensor->data.f[i],4); // The int here gives the decimal places
     }
     //======================================================= */ 
     Serial.println();

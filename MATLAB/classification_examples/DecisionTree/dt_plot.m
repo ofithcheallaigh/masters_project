@@ -1,9 +1,9 @@
-% closed = closeddoorfinaldataset;
-% open = midhallwayclearfinaldataset;
+closed = closeddoorfinaldataset;
+open = midhallwayclearfinaldataset;
 % 
-% inputTable = vertcat(closed,open); % Brings arrays together
+inputTable = vertcat(closed,open); % Brings arrays together
 
-inputTable = out;
+% inputTable = out;
 
 % Change the Pclass from number to char (categorical variable) for
 % convience 

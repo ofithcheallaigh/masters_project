@@ -46,19 +46,19 @@ inputTable = vertcat(closedDoor, displayStand,largeBin,storageBox);
 predictorNames = {'Channel1','Channel2'};
 toNormalise = inputTable(:,predictorNames);
 % N = normalize(toNormalise,'range');
-% predictors = N;
+% bpredictors = N;
 predictors = inputTable(:,predictorNames);  % Could also be predictorNames = inputTable(:,[3,5,12]);
 response = inputTable.Grid;
+% response = inputTable.LabelObject;
 
 % ~~Train the classifier~~
-% This code specifies all the classifier options and trains the classifier
-% option and trains the classifier
+% This code specifies all the classifier options and trains the classifier option and trains the classifier
 % trainedDecisionTreeModel = fitctree(predictors,response,'OptimizeHyperparameters','auto');
 trainedDecisionTreeModel = fitctree(predictors,response);
 validationAccuracy = 1 - loss(trainedDecisionTreeModel,predictors,response);
 
 % ~~Graphic respresentation of the tree~~
-% view(trainedDecisionTreeModel,'mode','graph')
+view(trainedDecisionTreeModel,'mode','graph')
 
 predicatedY = resubPredict(trainedDecisionTreeModel); 
 
@@ -82,6 +82,7 @@ testData = inputTable(idx(m1+1:end),:);
 % Build a new tree on the training datasets only
 predictors = trainingData(:, predictorNames);
 response = trainingData.Grid;
+% response = trainingData.LabelObject;
 trainedDecisionModdel1 = fitctree(predictors,response);
 
 % Compute the accuracy on the training data
@@ -94,6 +95,7 @@ predictedY = predict(trainedDecisionModdel1,testData(:,predictorNames));
 % Create a confusion matrix chart from the true labels and the predicted
 % labelspredictedY
 cm = confusionchart(testData.Grid,predictedY);
+% cm = confusionchart(testData.LabelObject,predictedY);
 
 
 

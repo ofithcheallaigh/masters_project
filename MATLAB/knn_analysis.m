@@ -13,20 +13,22 @@ storageBox = readtable("grid0_storagebox_clearhallway.csv");
 % distrinution
 
 
-inputTable = vertcat(closedDoor, displayStand,largeBin,storageBox);
+inputTable = vertcat(closedDoor,displayStand,largeBin,storageBox);
 
 predictorNames = {'Channel1','Channel2'};
-toNormalise = inputTable(:,predictorNames);
-N = normalize(toNormalise,'range');
-predictors = N;
+% toNormalise = inputTable(:,predictorNames);
+% N = normalize(toNormalise,'range');
+% predictors = N;
+predictors = inputTable(:,predictorNames);
 
 response = inputTable.Grid;
+% response = inputTable.LabelObject;
 
-mdl = fitcknn(predictors,response,'NumNeighbors',3);
+mdl = fitcknn(predictors,response,'NumNeighbors',10);
 
 % Now we will carry out cross validation of the model using crossval, 
 % using 5-fold cross validation
-cvmdl1= crossval(mdl,'KFold',10);
+cvmdl1= crossval(mdl,'KFold',15);
 
 % We can use Holdout to keep 30% of the data for evaluation
 cvmdl2 = crossval(mdl,'Holdout',0.3);
