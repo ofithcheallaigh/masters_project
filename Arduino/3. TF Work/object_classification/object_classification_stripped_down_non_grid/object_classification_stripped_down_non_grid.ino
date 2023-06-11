@@ -13,8 +13,13 @@
 #include "channel1.h" //input_array_1
 #include "channel2.h" //input_array_2
 
-// #include "model.h"
-#include "object_detect.h"
+#include "model.h"
+// #include "object_detect.h"
+
+// Figure out what's going on in our model
+#define DEBUG 1
+
+
 
 // Declare the 3D array of data.
 float reshaped_data[1][5000][2];
@@ -59,6 +64,11 @@ const char* GRIDS[] = {
 // #define NUM_GRIDS 10
 
 void setup() {
+
+    // Wait for Serial to connect
+  #if DEBUG
+    while(!Serial);
+  #endif
   delay(1000);
   Serial.begin(9600);
   while(!Serial);
@@ -90,6 +100,17 @@ void setup() {
 
   // Get a pointer to the output tensor data
   // float* output_data = tflOutputTensor->data.f;
+
+#if DEBUG
+  Serial.print("Number of dimensions: ");
+  Serial.println(tflInputTensor->dims->size);
+  Serial.print("Dim 1 size: ");
+  Serial.println(tflInputTensor->dims->data[0]);
+  Serial.print("Dim 2 size: ");
+  Serial.println(tflInputTensor->dims->data[1]);
+  Serial.print("Input type: ");
+  Serial.println(tflInputTensor->type);
+#endif
 }
 
 void loop() 
